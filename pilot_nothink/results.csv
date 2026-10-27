@@ -1,0 +1,12 @@
+doc_id,repeat,true_type,true_label,match_seed,model,temperature,top_p,think,timestamp_utc,content,thinking,latency_s,eval_count,prompt_eval_count,done_reason,parse_ok,schema_ok,label_valid,unique_max,prob_sum,prediction,argmax,p_true,log_loss,brier,correct,evidence,p_Type_A,p_Type_B,p_Type_C,p_Type_D,p_Type_E,error
+cautious_01,1,Cautious,Type E,3720934964,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T18:07:08+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.70,
+""Type D"": 0.05,
+""Type E"": 0.05
+},
+""prediction"": ""Type C"",
+""evidence"": ""The opponent's frequent betting with non-King cards (Hands 4 and 7) and folding to value bets with the King (Hands 2 and 8) indicates a very aggressive strategy that deviates from equilibrium or passive types.""
+}",,10.32,127,674,stop,True,True,True,True,1.0,Type C,Type C,0.05,2.9957,1.42,False,The opponent's frequent betting with non-King cards (Hands 4 and 7) and folding to value bets with the King (Hands 2 and 8) indicates a very aggressive strategy that deviates from equilibrium or passive types.,0.05,0.15,0.7,0.05,0.05,

@@ -1,0 +1,166 @@
+doc_id,repeat,true_type,true_label,match_seed,model,temperature,top_p,think,timestamp_utc,content,thinking,latency_s,eval_count,prompt_eval_count,done_reason,parse_ok,schema_ok,label_valid,unique_max,prob_sum,prediction,argmax,p_true,log_loss,brier,correct,evidence,p_Type_A,p_Type_B,p_Type_C,p_Type_D,p_Type_E,error
+cautious_01,1,Cautious,Type E,3720934964,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:21:44+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.70,
+""Type D"": 0.05,
+""Type E"": 0.05
+},
+""prediction"": ""Type C"",
+""evidence"": ""The opponent's frequent betting with non-King cards (Hands 4 and 7) and folding to value bets with the King (Hands 2 and 8) indicates a very aggressive strategy that does not align with passive, cautious, or equilibrium play.""
+}",,200.83,131,674,stop,True,True,True,True,1.0,Type C,Type C,0.05,2.9957,1.42,False,"The opponent's frequent betting with non-King cards (Hands 4 and 7) and folding to value bets with the King (Hands 2 and 8) indicates a very aggressive strategy that does not align with passive, cautious, or equilibrium play.",0.05,0.15,0.7,0.05,0.05,
+cautious_02,1,Cautious,Type E,2346983575,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:25:05+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.10,
+""Type D"": 0.70,
+""Type E"": 0.00
+},
+""prediction"": ""Type D"",
+""evidence"": ""The opponent exhibits aggressive bluffing behavior by betting with non-King cards (Hands 3 and 7) and folding to value bets with the King (Hands 2, 6, 8), which is inconsistent with static aggressive or cautious types but consistent with an adaptive strategy that bluffs when the learner folds.""
+}",,173.05,143,685,stop,True,True,True,True,1.0,Type D,Type D,0.0,13.8155,1.525,False,"The opponent exhibits aggressive bluffing behavior by betting with non-King cards (Hands 3 and 7) and folding to value bets with the King (Hands 2, 6, 8), which is inconsistent with static aggressive or cautious types but consistent with an adaptive strategy that bluffs when the learner folds.",0.05,0.15,0.1,0.7,0.0,
+cautious_03,1,Cautious,Type E,1985014623,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:27:58+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.70,
+""Type D"": 0.05,
+""Type E"": 0.05
+},
+""prediction"": ""Type C"",
+""evidence"": ""The opponent consistently bets with non-King cards (Hands 2, 3, 4, 7) and folds to value bets with the King (Hands 6, 8), indicating a very aggressive strategy that does not align with the selective betting of Types A, B, or E.""
+}",,199.8,140,681,stop,True,True,True,True,1.0,Type C,Type C,0.05,2.9957,1.42,False,"The opponent consistently bets with non-King cards (Hands 2, 3, 4, 7) and folds to value bets with the King (Hands 6, 8), indicating a very aggressive strategy that does not align with the selective betting of Types A, B, or E.",0.05,0.15,0.7,0.05,0.05,
+maniac_01,1,Maniac,Type C,1538784482,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:31:17+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.70,
+""Type D"": 0.05,
+""Type E"": 0.05
+},
+""prediction"": ""Type C"",
+""evidence"": ""The opponent's behavior of betting with the Jack (Hands 5 and 6) and calling bets with the Jack (Hands 1 and 3) is inconsistent with passive or cautious types (A, E) and rare in equilibrium (B), strongly indicating an aggressive strategy that bets and calls with weak cards.""
+}",,225.96,142,662,stop,True,True,True,True,1.0,Type C,Type C,0.7,0.3567,0.12,True,"The opponent's behavior of betting with the Jack (Hands 5 and 6) and calling bets with the Jack (Hands 1 and 3) is inconsistent with passive or cautious types (A, E) and rare in equilibrium (B), strongly indicating an aggressive strategy that bets and calls with weak cards.",0.05,0.15,0.7,0.05,0.05,
+maniac_02,1,Maniac,Type C,621184583,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:35:03+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.70,
+""Type D"": 0.05,
+""Type E"": 0.05
+},
+""prediction"": ""Type C"",
+""evidence"": ""The opponent consistently bets with non-King cards (Hands 1, 3, 7, 8) and calls bets with the Jack (Hand 1), which is characteristic of a very aggressive strategy that ignores card strength, unlike the passive or equilibrium strategies.""
+}",,285.04,133,673,stop,True,True,True,True,1.0,Type C,Type C,0.7,0.3567,0.12,True,"The opponent consistently bets with non-King cards (Hands 1, 3, 7, 8) and calls bets with the Jack (Hand 1), which is characteristic of a very aggressive strategy that ignores card strength, unlike the passive or equilibrium strategies.",0.05,0.15,0.7,0.05,0.05,
+maniac_03,1,Maniac,Type C,3147320240,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:39:48+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.70,
+""Type D"": 0.05,
+""Type E"": 0.05
+},
+""prediction"": ""Type C"",
+""evidence"": ""The opponent consistently bets with weak cards (Jack in Hand 2) and strong cards (King in Hand 4), and frequently initiates bets when the learner checks (Hands 1, 3, 6, 8), indicating an aggressive strategy that does not fold or check often, unlike passive or cautious types.""
+}",,144.38,144,669,stop,True,True,True,True,1.0,Type C,Type C,0.7,0.3567,0.12,True,"The opponent consistently bets with weak cards (Jack in Hand 2) and strong cards (King in Hand 4), and frequently initiates bets when the learner checks (Hands 1, 3, 6, 8), indicating an aggressive strategy that does not fold or check often, unlike passive or cautious types.",0.05,0.15,0.7,0.05,0.05,
+nash_01,1,Nash,Type B,865025015,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:42:13+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.05,
+""Type D"": 0.75,
+""Type E"": 0.00
+},
+""prediction"": ""Type D"",
+""evidence"": ""The opponent's behavior is consistent with an adaptive strategy that starts passively (checking with Queen in Hand 1 and 5) but shifts to aggressive bluffing (betting with Jack in Hand 3) after observing the learner fold to a bet in Hand 2.""
+}",,160.46,134,670,stop,True,True,True,True,1.0,Type D,Type D,0.15,1.8971,1.29,False,The opponent's behavior is consistent with an adaptive strategy that starts passively (checking with Queen in Hand 1 and 5) but shifts to aggressive bluffing (betting with Jack in Hand 3) after observing the learner fold to a bet in Hand 2.,0.05,0.15,0.05,0.75,0.0,
+nash_02,1,Nash,Type B,3496141554,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:44:53+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.10,
+""Type C"": 0.05,
+""Type D"": 0.05,
+""Type E"": 0.75
+},
+""prediction"": ""Type E"",
+""evidence"": ""The opponent consistently folds to any bet and never initiates a bet, which aligns perfectly with Type E's strategy of betting and calling only with the King (and thus folding/checking with weaker cards), while ruling out aggressive or bluffing types.""
+}",,233.63,129,671,stop,True,True,True,True,1.0,Type E,Type E,0.1,2.3026,1.38,False,"The opponent consistently folds to any bet and never initiates a bet, which aligns perfectly with Type E's strategy of betting and calling only with the King (and thus folding/checking with weaker cards), while ruling out aggressive or bluffing types.",0.05,0.1,0.05,0.05,0.75,
+nash_03,1,Nash,Type B,2499804056,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:48:47+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.05,
+""Type D"": 0.75,
+""Type E"": 0.00
+},
+""prediction"": ""Type D"",
+""evidence"": ""The opponent's behavior is inconsistent with static types: they fold to value bets with the King (Hands 1, 2, 6) suggesting passivity, but call a value bet with the Queen (Hand 7) and bluff with the Jack (Hand 8), indicating an adaptive strategy that exploits the learner's folding tendencies.""
+}",,223.7,147,671,stop,True,True,True,True,1.0,Type D,Type D,0.15,1.8971,1.29,False,"The opponent's behavior is inconsistent with static types: they fold to value bets with the King (Hands 1, 2, 6) suggesting passivity, but call a value bet with the Queen (Hand 7) and bluff with the Jack (Hand 8), indicating an adaptive strategy that exploits the learner's folding tendencies.",0.05,0.15,0.05,0.75,0.0,
+rock_01,1,Rock,Type A,1191945033,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:52:31+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.10,
+""Type C"": 0.05,
+""Type D"": 0.05,
+""Type E"": 0.75
+},
+""prediction"": ""Type E"",
+""evidence"": ""The opponent consistently folds to any bet and only shows the King at showdown, matching the cautious strategy of betting/calling only with the King and folding otherwise.""
+}",,93.92,110,665,stop,True,True,True,True,1.0,Type E,Type E,0.05,2.9957,1.48,False,"The opponent consistently folds to any bet and only shows the King at showdown, matching the cautious strategy of betting/calling only with the King and folding otherwise.",0.05,0.1,0.05,0.05,0.75,
+rock_02,1,Rock,Type A,2631188114,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:54:05+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.05,
+""Type D"": 0.05,
+""Type E"": 0.70
+},
+""prediction"": ""Type E"",
+""evidence"": ""The opponent never initiated a bet and folded to every bet placed by the learner, consistent with a strategy that only bets/calls with the King (which was never held in the observed hands where the opponent acted first or faced a bet), while checking/folding with lower cards.""
+}",,98.63,134,671,stop,True,True,True,True,1.0,Type E,Type E,0.05,2.9957,1.42,False,"The opponent never initiated a bet and folded to every bet placed by the learner, consistent with a strategy that only bets/calls with the King (which was never held in the observed hands where the opponent acted first or faced a bet), while checking/folding with lower cards.",0.05,0.15,0.05,0.05,0.7,
+rock_03,1,Rock,Type A,2293170684,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:55:43+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.05,
+""Type D"": 0.15,
+""Type E"": 0.60
+},
+""prediction"": ""Type E"",
+""evidence"": ""The opponent consistently checks with non-King cards (Jack, Queen) and folds to all bets, which aligns perfectly with Type E's strategy of betting/calling only with the King, whereas Type A would have called the King in Hand 2 and 4.""
+}",,111.73,133,659,stop,True,True,True,True,1.0,Type E,Type E,0.05,2.9957,1.31,False,"The opponent consistently checks with non-King cards (Jack, Queen) and folds to all bets, which aligns perfectly with Type E's strategy of betting/calling only with the King, whereas Type A would have called the King in Hand 2 and 4.",0.05,0.15,0.05,0.15,0.6,
+exploiter_01,1,Exploiter,Type D,974391396,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T20:57:35+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.70,
+""Type D"": 0.05,
+""Type E"": 0.05
+},
+""prediction"": ""Type C"",
+""evidence"": ""The opponent bet in every hand where they had the option (Hands 1, 2, 3, 4, 5, 6, 7, 8), including with weak cards like the Jack (Hand 2) and likely the Queen (Hand 4/6), which is characteristic of a very aggressive strategy that bets with almost any card.""
+}",,222.94,154,673,stop,True,True,True,True,1.0,Type C,Type C,0.05,2.9957,1.42,False,"The opponent bet in every hand where they had the option (Hands 1, 2, 3, 4, 5, 6, 7, 8), including with weak cards like the Jack (Hand 2) and likely the Queen (Hand 4/6), which is characteristic of a very aggressive strategy that bets with almost any card.",0.05,0.15,0.7,0.05,0.05,
+exploiter_02,1,Exploiter,Type D,1166648903,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T21:01:18+00:00,"{
+""probs"": {
+""Type A"": 0.00,
+""Type B"": 0.10,
+""Type C"": 0.80,
+""Type D"": 0.05,
+""Type E"": 0.05
+},
+""prediction"": ""Type C"",
+""evidence"": ""The opponent bet in every single hand regardless of the learner's card or action, which is inconsistent with passive, cautious, or equilibrium strategies that check or fold frequently, but consistent with a very aggressive bot that bets with almost any card.""
+}",,134.74,126,679,stop,True,True,True,True,1.0,Type C,Type C,0.05,2.9957,1.555,False,"The opponent bet in every single hand regardless of the learner's card or action, which is inconsistent with passive, cautious, or equilibrium strategies that check or fold frequently, but consistent with a very aggressive bot that bets with almost any card.",0.0,0.1,0.8,0.05,0.05,
+exploiter_03,1,Exploiter,Type D,2205399830,qwen3.8:27b-mlx,0.0,0.95,false,2026-10-27T21:03:33+00:00,"{
+""probs"": {
+""Type A"": 0.05,
+""Type B"": 0.15,
+""Type C"": 0.05,
+""Type D"": 0.75,
+""Type E"": 0.00
+},
+""prediction"": ""Type D"",
+""evidence"": ""The opponent's behavior is inconsistent with static types: they fold to value bets with the King (suggesting passivity like Type A/E) but also bet and force folds with the Queen (suggesting aggression/bluffing like Type C/D), which aligns with an adaptive strategy that bluffs when the learner folds or checks.""
+}",,244.46,145,669,stop,True,True,True,True,1.0,Type D,Type D,0.75,0.2877,0.09,True,"The opponent's behavior is inconsistent with static types: they fold to value bets with the King (suggesting passivity like Type A/E) but also bet and force folds with the Queen (suggesting aggression/bluffing like Type C/D), which aligns with an adaptive strategy that bluffs when the learner folds or checks.",0.05,0.15,0.05,0.75,0.0,

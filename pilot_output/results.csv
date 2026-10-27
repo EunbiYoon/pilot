@@ -1,0 +1,2642 @@
+doc_id,repeat,true_type,true_label,match_seed,model,temperature,top_p,think,timestamp_utc,content,thinking,latency_s,eval_count,prompt_eval_count,done_reason,parse_ok,schema_ok,label_valid,unique_max,prob_sum,prediction,argmax,p_true,log_loss,brier,correct,evidence,error,p_Type_A,p_Type_B,p_Type_C,p_Type_D,p_Type_E
+cautious_01,1,Cautious,Type E,3720934964,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:19:45+00:00,,"Let me analyze each hand carefully to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand:
+
+**Hand 1:** You are Player 1, hold Jack. You checked. Opponent checked. Showdown: opponent had Queen. You lost 1 chip.
+- Opponent with Queen checked back. This is consistent with Type A (never bets), Type B (checks Queen), Type E (bets only with King, so checks with Queen). Type C would likely bet with Queen. Type D might check or bet.
+
+**Hand 2:** You are Player 2, hold King. Opponent checked. You bet. Opponent folded.
+- Opponent checked (as Player 1), then folded to your bet. This is consistent with Type A (never bets, folds to bets unless has King), Type B (could fold to bet with non-King), Type E (bets only with King, folds otherwise). Type C would likely call. Type D might fold.
+
+**Hand 3:** You are Player 1, hold Jack. You bet. Opponent folded.
+- Opponent folded to your bet. Consistent with Type A (folds to bets), Type B (could fold), Type E (folds to bets unless King). Type C would likely call. Type D might fold.
+
+**Hand 4:** You are Player 2, hold Jack. Opponent bet. You folded.
+- Opponent (as Player 1) bet. This is interesting. Type A never bets, so this rules out Type A. Type B bets with King (value) or sometimes bluffs with Jack. Type C bets with almost any card. Type D might bet. Type E bets only with King.
+- The opponent bet as Player 1. Since we don't know their card, this could be a value bet (King), a bluff (Jack), or an aggressive bet (any card).
+
+**Hand 5:** You are Player 1, hold Jack. You checked. Opponent checked. Showdown: opponent had Queen. You lost 1 chip.
+- Same as Hand 1. Opponent with Queen checked. Consistent with Type A, B, E. Not consistent with Type C (would bet).
+
+**Hand 6:** You are Player 2, hold Queen. Opponent checked. You checked. Showdown: opponent had Jack. You won 1 chip.
+- Opponent (as Player 1) checked with Jack. This is consistent with Type A (never bets), Type B (could check Jack, though might bluff), Type E (checks non-King). Type C would likely bet with Jack. Type D might check.
+
+**Hand 7:** You are Player 1, hold Jack. You checked. Opponent bet. You folded.
+- Opponent (as Player 2) bet after you checked. This means opponent is betting as Player 2. Type A never bets, so this rules out Type A. Type B might bet (bluff or value). Type C would bet. Type D might bet. Type E bets only with King.
+- The opponent bet as Player 2. This is a bet after a check.
+
+**Hand 8:** You are Player 2, hold King. Opponent checked. You bet. Opponent folded.
+- Same as Hand 2. Opponent checked as Player 1, then folded to your bet. Consistent with Type A, B, E. Not Type C.
+
+Now let me summarize the opponent's behavior:
+- Hand 1: Checked with Queen (as Player 2) - passive
+- Hand 2: Checked as Player 1, folded to bet - passive
+- Hand 3: Folded to bet (as Player 2) - passive
+- Hand 4: Bet as Player 1 - aggressive (rules out Type A)
+- Hand 5: Checked with Queen (as Player 2) - passive
+- Hand 6: Checked with Jack (as Player 1) - passive
+- Hand 7: Bet as Player 2 (after check) - aggressive
+- Hand 8: Checked as Player 1, folded to bet - passive
+
+Key observations:
+- The opponent bet twice (Hand 4 as Player 1, Hand 7 as Player 2). This rules out Type A (never bets) and makes Type E less likely (bets only with King).
+- The opponent folded to bets multiple times (Hand 2, Hand 3, Hand 8). This is consistent with passive types but also with Type B.
+- The opponent checked with Queen twice (Hands 1, 5) and with Jack once (Hand 6).
+- The opponent bet in Hand 4 (as Player 1) and Hand 7 (as Player 2).
+
+Let me reconsider:
+- Type A: Never bets. But opponent bet in Hands 4 and 7. RULED OUT.
+- Type B: Equilibrium strategy. Bets with King (value), sometimes bluffs with Jack, checks Queen, calls with Queen sometimes. The opponent bet twice and folded multiple times. The checks with Queen are consistent. The bets could be value (King) or bluffs (Jack). The folds to bets are consistent with equilibrium (folding with Jack/Queen to bets).
+- Type C: Very aggressive, bets and calls with almost any card. But the opponent folded to bets in Hands 2, 3, 8. Type C would call. This makes Type C unlikely.
+- Type D: Adaptive, starts close to equilibrium but bluffs more when learner folds often. The learner folded in Hands 4 and 7. But the opponent's behavior seems relatively consistent - not showing a clear escalation pattern.
+- Type E: Bets and calls only with King. The opponent bet in Hands 4 and 7. If both were with King, that's possible but unlikely (only one King in the deck). Wait, actually in Kuhn Poker, each hand is independent with a fresh deck. So the opponent could have King in both. But Type E also folds to bets unless holding King. The opponent folded in Hands 2, 3, 8. In Hand 2, opponent was Player 1 and checked (so didn't have King, since Type E bets with King). In Hand 3, opponent was Player 2 and folded to bet (didn't have King). In Hand 8, opponent was Player 1 and checked (didn't have King). So in 3 hands, opponent didn't have King. In Hands 4 and 7, opponent bet - could be King. But Type E would also check with non-King as Player 1, which is consistent with Hands 1, 5, 6, 8. However, Type E would fold to any bet unless holding King, which is consistent with Hands 2, 3, 8.
+
+Wait, let me reconsider Type E more carefully. Type E: ""bets and calls only with the King, otherwise checks or folds."" So:
+- As Player 1: bets only with King, checks otherwise.
+- As Player 2: calls only with King, folds otherwise. Also, if Player 1 checks, Type E checks (since they don't bet without King).
+
+Hand 4: Opponent bet as Player 1. If Type E, must have King. Possible.
+Hand 7: Opponent bet as Player 2 after check. If Type E, must have King. Possible.
+Hand 2: Opponent checked as Player 1 (not King), then folded to bet (not King). Consistent.
+Hand 3: Opponent folded to bet as Player 2 (not King). Consistent.
+Hand 8: Opponent checked as Player 1 (not King), then folded to bet (not King). Consistent.
+Hand 1: Opponent checked as Player 2 with Queen. Consistent (not King, so checks).
+Hand 5: Opponent checked as Player 2 with Queen. Consistent.
+Hand 6: Opponent checked as Player 1 with Jack. Consistent (not King, so checks).
+
+So Type E is actually quite consistent with all hands! The two bets could both be with King.
+
+But wait - in Hand 4, the opponent bet as Player 1. If Type E, they must have King. In Hand 7, opponent bet as Player 2. If Type E, they must have King. That's two Kings out of 8 hands. Probability of getting King in a specific hand is 1/3. Getting it in 2 specific hands out of 8 is (1/3)^2 * (2/3)^6 ≈ 0.112. That's not impossible but not super likely.
+
+For Type B: The opponent's behavior is more nuanced. Bets with King (value), sometimes bluffs with Jack, checks Queen, calls with Queen sometimes. The two bets could be one King and one Jack bluff, or two Kings, or one King and one Queen (but Type B checks Queen). Actually Type B checks Queen, so the bets must be King or Jack. The folds to bets are consistent with folding with Jack or Queen. The checks with Queen are consistent.
+
+For Type D: Starts close to equilibrium but bluffs more when learner folds often. The learner folded in Hands 4 and 7. But the opponent's behavior doesn't show a clear escalation - they bet in Hand 4 and Hand 7, but also in the earlier hands they were passive. Actually, the learner folded in Hand 4 (opponent bet, learner folded) and Hand 7 (opponent bet, learner folded). But the opponent also bet in Hand 4 before the learner had folded to a bet yet. So the ""adaptive"" aspect isn't clearly demonstrated.
+
+Let me reconsider the probabilities:
+
+- Type A: Ruled out (opponent bet in Hands 4 and 7). Probability ≈ 0.
+- Type B: Consistent with all observations. Bets could be value (King) or bluffs (Jack). Folds consistent. Checks with Queen consistent. Probability: moderate to high.
+- Type C: Inconsistent with multiple folds to bets (Hands 2, 3, 8). Type C would call with almost any card. Probability: very low.
+- Type D: Possible but no clear evidence of adaptation. The behavior looks more like equilibrium or cautious. Probability: low.
+- Type E: Consistent with all observations. Two bets could be Kings. Folds consistent. Checks consistent. Probability: moderate.
+
+The main distinction between Type B and Type E:
+- Type B would sometimes bluff with Jack and call with Queen sometimes.
+- Type E would only bet/call with King.
+
+In 8 hands, the opponent bet twice. If Type E, both must be King (probability (1/3)^2 ≈ 0.11 for those specific hands). If Type B, the bets could be King or Jack bluff, which is more flexible.
+
+Actually, let me think about this differently. The opponent:
+- Checked as Player 1 in Hands 1, 5, 6, 8 (4 times) - but wait, in Hand 1 and 5, opponent was Player 2, not Player 1. Let me recheck.
+
+Hand 1: You are Player 1, opponent is Player 2. Opponent checked (as Player 2).
+Hand 2: You are Player 2, opponent is Player 1. Opponent checked (as Player 1).
+Hand 3: You are Player 1, opponent is Player 2. Opponent folded to your bet (as Player 2).
+Hand 4: You are Player 2, opponent is Player 1. Opponent bet (as Player 1).
+Hand 5: You are Player 1, opponent is Player 2. Opponent checked (as Player 2).
+Hand 6: You are Player 2, opponent is Player 1. Opponent checked (as Player 1).
+Hand 7: You are Player 1, opponent is Player 2. Opponent bet (as Player 2).
+Hand 8: You are Player 2, opponent is Player 1. Opponent checked (as Player 1).
+
+So as Player 1, opponent: checked (Hand 2), bet (Hand 4), checked (Hand 6), checked (Hand 8). 3 checks, 1 bet.
+As Player 2, opponent: checked (Hand 1), folded (Hand 3), checked (Hand 5), bet (Hand 7). 2 checks, 1 fold, 1 bet.
+
+For Type E:
+- As Player 1: bets only with King. Bet in Hand 4 → King. Checked in Hands 2, 6, 8 → not King (Queen or Jack).
+- As Player 2: calls only with King, otherwise folds. But in Hand 7, opponent BET as Player 2. Type E says ""bets and calls only with the King."" So if Type E bets as Player 2, it must be with King. In Hand 1 and 5, opponent checked as Player 2 (not King, so checks - consistent). In Hand 3, opponent folded to bet (not King - consistent). In Hand 7, opponent bet (must be King).
+
+So Type E requires King in Hand 4 and King in Hand 7. That's 2 Kings out of 8 hands.
+
+For Type B:
+- As Player 1: value-bets King, sometimes bluffs Jack, checks Queen. Bet in Hand 4 could be King or Jack bluff. Checks in Hands 2, 6, 8 could be Queen or Jack (if not bluffing).
+- As Player 2: calls with Queen sometimes, folds otherwise. But in Hand 7, opponent BET as Player 2. In equilibrium, Player 2 can bet after a check (this is a continuation bet or a response to check). Actually, in Kuhn Poker, if Player 1 checks, Player 2 can check or bet. So Type B as Player 2 could bet (bluff or value).
+
+Type B is more flexible and doesn't require specific cards. The behavior is broadly consistent.
+
+Let me also consider: the opponent never called a bet. In Hands 2, 3, 8, the opponent folded. In equilibrium (Type B), the opponent would sometimes call with Queen. But with only 3 opportunities, not calling is not unusual.
+
+I think the most likely types are:
+- Type B: ~0.35-0.45 (equilibrium-like behavior, flexible)
+- Type E: ~0.30-0.40 (cautious, only bets with King, consistent with observations)
+- Type D: ~0.10-0.15 (possible but no clear adaptation evidence)
+- Type C: ~0.05 (inconsistent with folds)
+- Type A: ~0.00-0.05 (ruled out by bets)
+
+Actually, let me reconsider. The key distinguishing features:
+1. Opponent bet twice (Hands 4, 7) - rules out A, makes C less likely (C would bet more)
+2. Opponent folded to 3 bets (Hands 2, 3, 8) - rules out C, consistent with A, B, D, E
+3. Opponent checked with Queen twice (Hands 1, 5) - consistent with A, B, E; C would bet
+4. Opponent checked with Jack (Hand 6) - consistent with A, B, E; C would bet
+5. Opponent bet as Player 2 (Hand 7) - rules out A, E would need King
+
+The fact that the opponent bet exactly twice and folded to all three bets suggests a cautious but not completely passive player. Type E fits well (bets only with King, folds otherwise). Type B also fits (equilibrium has some betting and some folding).
+
+The lack of any calling behavior (opponent never called a bet) is notable. Type B in equilibrium would call with Queen sometimes. But with only 3 opportunities, not calling is within variance.
+
+I'll go with:
+- Type A: 0.00 (ruled out by bets)
+- Type B: 0.30
+- Type C: 0.05 (inconsistent with folds)
+- Type D: 0.10 (no clear adaptation)
+- Type E: 0.55 (best fit: cautious, bets only with King, folds otherwise, checks non-King)
+
+Wait, actually let me reconsider Type E vs Type B more carefully.
+
+Type E: ""bets and calls only with the King, otherwise checks or folds.""
+- This means as Player 1: bet if King, check otherwise.
+- As Player 2: if Player 1 bets, call if King, fold otherwise. If Player 1 checks, bet if King, check otherwise.
+
+Hand 4: Opponent (Player 1) bet → must be King. ✓
+Hand 7: Opponent (Player 2) bet after check → must be King. ✓
+Hand 2: Opponent (Player 1) checked → not King. Then folded to bet → not King. ✓
+Hand 3: Opponent (Player 2) folded to bet → not King. ✓
+Hand 8: Opponent (Player 1) checked → not King. Then folded to bet → not King. ✓
+Hand 1: Opponent (Player 2) checked → not King (had Queen). ✓
+Hand 5: Opponent (Player 2) checked → not King (had Queen). ✓
+Hand 6: Opponent (Player 1) checked → not King (had Jack). ✓
+
+Everything is perfectly consistent with Type E. The only question is whether getting King in 2 out of 8 hands is reasonable. P(King in a specific hand) = 1/3. P(King in exactly 2 specific hands and not in the other 6) = (1/3)^2 * (2/3)^6 ≈ 0.0123 * 0.0878 ≈ 0.00108. Hmm, that's actually quite low.
+
+But wait, we don't know the exact cards in all hands. We know:
+- Hand 1: opponent had Queen
+- Hand 5: opponent had Queen
+- Hand 6: opponent had Jack
+- Hands 2, 3, 4, 7, 8: opponent's card unknown
+
+For Type E, we need:
+- Hand 4: King (required)
+- Hand 7: King (required)
+- Hand 2: not King (checked as P1, so not King)
+- Hand 3: not King (folded to bet, so not King)
+- Hand 8: not King (checked as P1, so not King)
+
+So we need King in Hands 4 and 7, and not King in Hands 2, 3,",262.8,4096,672,length,False,False,False,False,,,,,,,,,,,,,,
+cautious_02,1,Cautious,Type E,2346983575,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:24:08+00:00,,"Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand and note the opponent's actions:
+
+Hand 1: I'm Player 1 with Jack. I checked. Opponent checked. Showdown: opponent had Queen.
+- Opponent with Queen checked. This is consistent with Type B (checks Queen), Type A (never bets), Type E (bets only with King, so checks with Queen). Not consistent with Type C (very aggressive, would likely bet) or Type D (adaptive, starts close to equilibrium).
+
+Hand 2: I'm Player 2 with King. Opponent checked. I bet. Opponent folded.
+- Opponent checked (as Player 1), then folded to my bet. The opponent's card is unknown. If opponent had Jack or Queen, folding to a bet is reasonable for passive types. If opponent had King, folding would be unusual for most types. This is consistent with Type A (folds to bets), Type E (folds to bets unless King), Type B (might fold with Jack/Queen). Not consistent with Type C (very aggressive, would call).
+
+Hand 3: I'm Player 1 with Jack. I checked. Opponent bet. I folded.
+- Opponent bet as Player 2 after I checked. This means opponent initiated a bet. This is NOT consistent with Type A (never bets) or Type E (bets only with King). This could be Type B (bluffing with Jack), Type C (aggressive, bets with almost any card), or Type D (adaptive).
+
+Hand 4: I'm Player 2 with Queen. Opponent checked. I checked. Showdown: opponent had Jack.
+- Opponent with Jack checked as Player 1. This is consistent with Type A (never bets), Type B (might check Jack, but equilibrium sometimes bluffs with Jack), Type E (bets only with King, so checks with Jack). Not consistent with Type C (very aggressive, would likely bet with Jack).
+
+Hand 5: I'm Player 1 with King. I bet. Opponent folded.
+- Opponent folded to my bet. Consistent with Type A, Type E, Type B (folding with non-King). Not consistent with Type C (would call).
+
+Hand 6: I'm Player 2 with King. Opponent checked. I bet. Opponent folded.
+- Opponent checked as Player 1, then folded to my bet. Consistent with Type A, Type E, Type B. Not consistent with Type C.
+
+Hand 7: I'm Player 1 with Queen. I checked. Opponent bet. I folded.
+- Opponent bet as Player 2 after I checked. Again, opponent initiated a bet. NOT consistent with Type A (never bets) or Type E (bets only with King). Could be Type B (bluffing), Type C (aggressive), or Type D.
+
+Hand 8: I'm Player 2 with King. Opponent checked. I bet. Opponent folded.
+- Opponent checked as Player 1, then folded to my bet. Consistent with Type A, Type E, Type B. Not consistent with Type C.
+
+Now let me summarize the opponent's behavior:
+- As Player 1: Checked in hands 1, 2, 4, 6, 8 (5 times). Never bet as Player 1.
+- As Player 2: Checked in hand 1 (with Queen). Bet in hands 3 and 7 (after I checked). Folded to bets in hands 2, 5, 6, 8.
+
+Key observations:
+1. Opponent NEVER bet as Player 1 (5 opportunities, 0 bets). This rules out Type C (very aggressive, would bet as Player 1 with almost any card).
+2. Opponent bet as Player 2 in hands 3 and 7 (2 out of 3 opportunities as Player 2 where I checked). This rules out Type A (never bets) and Type E (bets only with King as Player 2... wait, let me reconsider).
+
+Wait, let me re-read the types:
+- Type A: very passive: never bets, calls only with the King, otherwise checks or folds.
+- Type E: cautious: bets and calls only with the King, otherwise checks or folds.
+
+Type A ""never bets"" - so opponent betting in hands 3 and 7 rules out Type A.
+Type E ""bets and calls only with the King"" - so if opponent bet in hands 3 and 7, they must have had the King. But in hand 3, I had Jack, so opponent could have Queen or King. In hand 7, I had Queen, so opponent could have Jack or King. It's possible opponent had King in both cases, but that's 2 Kings out of 3 cards in 2 hands... actually each hand is independent, so opponent could have King in both. But it's somewhat unlikely (1/3 * 1/3 = 1/9).
+
+Actually wait - Type E says ""bets and calls only with the King."" So if opponent is Type E, they would only bet when they have King. In hand 3, I had Jack, so opponent had Queen or King (50% chance of King). In hand 7, I had Queen, so opponent had Jack or King (50% chance of King). So probability of both being King is 1/4. That's possible but not very likely.
+
+Also, Type E ""otherwise checks or folds"" - in hands 2, 5, 6, 8, opponent folded to my bets. If opponent had King, they would call (Type E calls with King). But we don't know opponent's card in those hands. In hand 2, I had King, so opponent had Jack or Queen - folding is consistent with Type E. In hand 5, I had King, so opponent had Jack or Queen - folding is consistent. In hand 6, I had King, so opponent had Jack or Queen - folding is consistent. In hand 8, I had King, so opponent had Jack or Queen - folding is consistent. So all folds are consistent with Type E.
+
+But the key issue is: opponent bet as Player 2 in hands 3 and 7. For Type E, this requires King both times. Probability = 1/3 * 1/3 = 1/9 ≈ 0.11.
+
+For Type B (equilibrium): As Player 2, after opponent checks, equilibrium strategy involves betting with King (value bet) and sometimes bluffing with Jack. The probability of betting as Player 2 in equilibrium is roughly: bet with King (1/3 of the time you have King) and bluff with Jack (some fraction). Actually in Kuhn poker equilibrium, as Player 2 facing a check, you bet with King and bluff with Jack with probability 1/3. So the probability of betting is roughly (1/3 * 1 + 1/3 * 1/3) / 1 = 4/9 ≈ 0.44. Having 2 bets out of 3 opportunities is plausible for Type B.
+
+For Type C (very aggressive): Would bet as Player 1 almost always. But opponent never bet as Player 1. This strongly rules out Type C.
+
+For Type D (adaptive): Starts close to equilibrium but bluffs more when learner folds often. The learner folded in hands 3 and 7. But Type D would also likely bet as Player 1 sometimes. Opponent never bet as Player 1, which is less consistent with Type D.
+
+Let me reconsider:
+
+Type A: Never bets. But opponent bet in hands 3 and 7. RULED OUT. Probability ≈ 0.
+
+Type B: Equilibrium. Checks Queen (hand 1 ✓), bets as Player 2 sometimes (hands 3, 7 - 2/3 bets is a bit high but possible), folds to bets with non-King (hands 2, 5, 6, 8 ✓). Never bets as Player 1 - in equilibrium, Player 1 bets with King and bluffs with Jack sometimes. Opponent was Player 1 in hands 1, 3, 5, 7. In hand 1, opponent had Queen and checked ✓. In hand 3, opponent was Player 2. In hand 5, opponent was Player 2. In hand 7, opponent was Player 2. Wait, let me recheck.
+
+Actually, let me re-read:
+- Hand 1: I'm Player 1, opponent is Player 2.
+- Hand 2: I'm Player 2, opponent is Player 1.
+- Hand 3: I'm Player 1, opponent is Player 2.
+- Hand 4: I'm Player 2, opponent is Player 1.
+- Hand 5: I'm Player 1, opponent is Player 2.
+- Hand 6: I'm Player 2, opponent is Player 1.
+- Hand 7: I'm Player 1, opponent is Player 2.
+- Hand 8: I'm Player 2, opponent is Player 1.
+
+So opponent is Player 1 in hands 2, 4, 6, 8. In all these, opponent checked. In equilibrium, Player 1 should bet with King and sometimes bluff with Jack. Opponent checked 4 times as Player 1. If opponent had King in any of these, they should have bet (in equilibrium). But we don't know opponent's cards in hands 2, 6, 8 (folds, no showdown). In hand 4, opponent had Jack and checked - in equilibrium, Player 1 with Jack sometimes bluffs (probability 1/3). Checking is possible (2/3 probability).
+
+So for Type B: 4 checks as Player 1 is possible but a bit low on betting. In equilibrium, Player 1 bets with King (1/3 chance) and bluffs with Jack (1/3 chance). So probability of checking as Player 1 is roughly 2/3 (Queen always checks, Jack checks 2/3, King never checks). With 4 hands, probability of all 4 being checks is (2/3)^4 ≈ 0.2. That's low but not impossible.
+
+Actually wait - in hand 4, opponent had Jack and checked. In equilibrium, Jack bluffs 1/3 of the time, so checking is 2/3 probability. In hands 2, 6, 8, we don't know the card. If opponent had Queen, they check. If King, they bet. If Jack, they check 2/3.
+
+For Type E: Bets only with King. As Player 1 in hands 2, 4, 6, 8, opponent checked all 4 times. This means opponent never had King as Player 1. Probability of not having King in 4 hands: (2/3)^4 ≈ 0.2. As Player 2 in hands 1, 3, 5, 7: checked in hand 1 (had Queen ✓), bet in hands 3 and 7 (must have King), folded in hands 5. For Type E, betting requires King. In hand 3, I had Jack, so opponent had Q or K (50% King). In hand 7, I had Queen, so opponent had J or K (50% King). Both being King: 1/4. In hand 5, I had King, so opponent had J or Q, and folding is consistent with Type E. In hand 1, opponent had Queen and checked ✓.
+
+So Type E probability is low because of the two bets requiring King.
+
+For Type C: Very aggressive, bets and calls with almost any card. Opponent never bet as Player 1 (4 times) and only bet 2/4 times as Player 2. Also folded to 4 bets. This is very inconsistent with Type C. Probability ≈ 0.
+
+For Type D: Adaptive, starts close to equilibrium but bluffs more when learner folds. The learner folded in hands 3 and 7. But Type D would still bet as Player 1 sometimes. Opponent never bet as Player 1. Also, Type D's adaptation would come later in the game, but we only see 8 hands. The behavior of betting as Player 2 but never as Player 1 is a bit odd for Type D.
+
+Let me reconsider the overall picture:
+- Opponent is very passive as Player 1 (never bets in 4 opportunities)
+- Opponent bets as Player 2 in 2 out of 4 opportunities (hands 3, 7)
+- Opponent folds to all 4 bets they face
+- Opponent checks with Queen (hand 1)
+
+The pattern of ""never bets as Player 1, sometimes bets as Player 2, always folds to bets"" is most consistent with a cautious/passive player who occasionally bluffs as Player 2.
+
+Actually, this pattern is quite consistent with Type E if we accept that opponent happened to have King in hands 3 and 7. But the probability is low.
+
+It could also be Type B with some variance - equilibrium would sometimes not bet as Player 1 and sometimes bet as Player 2.
+
+Let me think about this differently. The key distinguishing features:
+- Never bets as Player 1: Rules out C strongly, makes D unlikely, makes B somewhat unlikely (but possible with variance)
+- Bets as Player 2 twice: Rules out A, makes E possible but requires King both times
+- Folds to all bets: Consistent with A, E, B (with non-King), inconsistent with C
+- Checks with Queen: Consistent with A, B, E
+
+Given that opponent bet as Player 2 in 2 hands, Type A is ruled out.
+Given that opponent never bet as Player 1, Type C is strongly ruled out.
+The behavior is most consistent with Type E (cautious, bets only with King) if we accept the King hypothesis, or Type B with variance.
+
+Actually, let me reconsider Type D. Type D ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The learner folded in hands 3 and 7. But the betting in hands 3 and 7 could be the initial equilibrium-like behavior (bluffing with Jack), not the adaptive behavior. And the lack of betting as Player 1 could be the ""starts close to equilibrium"" part with some variance. But Type D would eventually start bluffing more, and we don't see that pattern clearly.
+
+I think the most likely type is Type E, with Type B as second. The opponent's behavior of being very passive (never betting as Player 1, folding to all bets) but occasionally betting as Player 2 (which for Type E requires King) fits the ""cautious"" profile.
+
+Let me assign probabilities:
+- Type A: 0.00 (ruled out by betting in hands 3, 7)
+- Type B: 0.25 (possible but the lack of Player 1 betting is a bit unusual)
+- Type C: 0.02 (strongly ruled out by passivity)
+- Type D: 0.08 (possible but no clear adaptation pattern)
+- Type E: 0.65 (best fit: very passive, occasional bets that could be King-only)
+
+Wait, let me reconsider. Actually, for Type E, the probability of the observed sequence:
+- Hand 1: Opponent (P2, Queen) checks. P = 1 (Type E checks non-King)
+- Hand 2: Opponent (P1) checks, then folds to bet. P = P(not King) * P(fold | not King) = 2/3 * 1 = 2/3
+- Hand 3: Opponent (P2) bets. P = P(King) = 1/3 (since I had Jack, opponent has Q or K)
+- Hand 4: Opponent (P1, Jack) checks. P = 1 (Type E checks non-King)
+- Hand 5: Opponent (P2) folds to bet. P = P(not King) * P(fold | not King) = 2/3 * 1 = 2/3 (I had King, so opponent has J or Q)
+- Hand 6: Opponent (P1) checks, then folds to bet. P = 2/3 * 1 = 2/3
+- Hand 7: Opponent (P2) bets. P = P(King) = 1/3 (I had Queen, opponent has J or K)
+- Hand 8: Opponent (P1) checks, then folds to bet. P = 2/3 * 1 = 2/3
+
+Total P(Type E) ∝ 1 * 2/3 * 1/3 * 1 * 2/3 * 2/3 * 1/3 * 2/3 = (2/3)^4 * (1/3)^2 = 16/81 * 1/9 = 16/729 ≈ 0.022
+
+For Type B (equilibrium):
+- Hand 1: Opponent (P2, Queen) checks. In equilibrium, P2 with Queen checks. P = 1
+- Hand 2: Opponent (P1) checks, then folds. In equilibrium, P1 bets with K and bluffs J with prob 1/3. P(check) = P(Q)*1 + P(J)*2/3 + P(K)*0 = 1/3 + 1/3*2/3 + 0 = 1/3 + 2/9 = 5/9. Then P(fold | bet faced) depends on card. If P1 had J or Q, they fold (in equilibrium, P2 folds to bet with J, and with Q calls with prob 1/3). Actually, this is getting complex. Let me simplify.
+
+Actually, I think the key insight is simpler. Let me just assess qualitatively:
+
+The opponent's behavior pattern:
+1. Never initiates a bet as Player 1 (4/4 checks) - very passive
+2. Bets as Player 2 in 2/4 opportunities - somewhat aggressive as P2
+3. Always folds to bets (4/4 folds) - very passive
+4. Checks with Queen - standard
+
+This is most consistent with Type E (cautious: bets and calls only with King). The two bets as Player 2 would require King, which is possible but not guaranteed. The complete passivity as Player 1 and folding to all bets strongly suggests a cautious player.
+
+Type B is second because equilibrium also involves checking often and folding, but the complete absence of Player 1 betting is a bit unusual.
+
+Let me",209.63,4096,683,length,False,False,False,False,,,,,,,,,,,,,,
+cautious_03,1,Cautious,Type E,1985014623,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:27:37+00:00,,"Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand and note the opponent's actions:
+
+Hand 1: I'm Player 1 with King. I bet. Opponent folded. (Opponent's card unknown - could be J or Q)
+Hand 2: I'm Player 2 with Jack. Opponent bet. I folded. (Opponent's card unknown - could be Q or K)
+Hand 3: I'm Player 1 with Queen. I checked. Opponent bet. I folded. (Opponent's card unknown - could be J or K)
+Hand 4: I'm Player 2 with Jack. Opponent bet. I folded. (Opponent's card unknown - could be Q or K)
+Hand 5: I'm Player 1 with Queen. I checked. Opponent checked. Showdown: opponent had Jack. (Opponent checked with Jack)
+Hand 6: I'm Player 2 with King. Opponent checked. I bet. Opponent folded. (Opponent's card unknown - could be J or Q)
+Hand 7: I'm Player 1 with Queen. I checked. Opponent bet. I folded. (Opponent's card unknown - could be J or K)
+Hand 8: I'm Player 2 with King. Opponent checked. I bet. Opponent folded. (Opponent's card unknown - could be J or Q)
+
+Now let me analyze the opponent's behavior:
+
+The opponent bet in hands 2, 3, 4, 7 (4 times out of 8 hands where they had a chance to act).
+The opponent checked in hands 5, 6, 8 (3 times).
+The opponent folded in hands 1, 6, 8 (3 times when facing a bet).
+
+Wait, let me re-examine. The opponent's actions:
+- Hand 1: Opponent is Player 2, facing a bet from Player 1. Opponent folded.
+- Hand 2: Opponent is Player 1. Opponent bet.
+- Hand 3: Opponent is Player 2, facing a check from Player 1. Opponent bet.
+- Hand 4: Opponent is Player 1. Opponent bet.
+- Hand 5: Opponent is Player 2, facing a check from Player 1. Opponent checked.
+- Hand 6: Opponent is Player 1. Opponent checked.
+- Hand 7: Opponent is Player 2, facing a check from Player 1. Opponent bet.
+- Hand 8: Opponent is Player 1. Opponent checked.
+
+So when the opponent is Player 1 (hands 2, 4, 6, 8):
+- Hand 2: Bet
+- Hand 4: Bet
+- Hand 6: Check
+- Hand 8: Check
+
+When the opponent is Player 2 facing a check (hands 3, 5, 7):
+- Hand 3: Bet
+- Hand 5: Check
+- Hand 7: Bet
+
+When the opponent is Player 2 facing a bet (hand 1):
+- Hand 1: Fold
+
+Now let me consider each type:
+
+Type A (very passive): Never bets, calls only with King, otherwise checks or folds.
+- The opponent bet in hands 2, 3, 4, 7. This is 4 bets. Type A NEVER bets. This is very inconsistent with Type A. Probability ≈ 0.
+
+Type B (equilibrium): Value-bets King, sometimes bluffs with Jack, checks Queen, calls with Queen sometimes.
+- In equilibrium, Player 1 bets with K (always), bluffs with J (1/3 of the time), checks with Q.
+- When facing a bet as Player 2: calls with Q (1/2 of the time), folds with J, calls with K.
+- The opponent bet 4 times out of 7 opportunities. In equilibrium, Player 1 bets with K (1/3 of cards) and bluffs with J (1/3 of the time), so betting probability is about 1/3 + 1/9 = 4/9 ≈ 0.44. With 7 opportunities, expected bets ≈ 3.1. We see 4 bets, which is reasonable.
+- But the opponent folded when facing a bet (hand 1). In equilibrium, Player 2 folds with J, calls with Q (1/2), calls with K. Folding is possible if they had J.
+- The opponent checked with Jack in hand 5. In equilibrium, Player 2 facing a check: checks with J (always), checks with Q (1/2), bets with K. So checking with J is consistent.
+- This seems plausible for Type B.
+
+Type C (very aggressive): Bets and calls with almost any card.
+- The opponent bet 4 times out of 7 opportunities. ""Almost any card"" would suggest betting more often, like 6-7 out of 7.
+- The opponent also folded 3 times when facing a bet (hands 1, 6, 8). Wait, hands 6 and 8 the opponent was Player 1 and checked, then I bet and they folded. So the opponent folded to a bet 3 times.
+- Type C ""bets and calls with almost any card"" - folding 3 times is inconsistent with ""calls with almost any card."" This seems unlikely for Type C.
+
+Type D (adaptive): Starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.
+- The learner folded to bets in hands 2, 3, 4, 7 (4 times out of 4 bets faced). The learner folded every time!
+- If the opponent is adaptive, it would notice the learner folding often and start bluffing more.
+- The opponent bet 4 times out of 7 opportunities. If it's adapting to the learner's folding, it might increase bluffing.
+- But the opponent also checked in hands 6 and 8 (as Player 1). If it's adapting to exploit the learner's folding, it might bet more.
+- However, the opponent also folded 3 times when facing a bet. An adaptive type that's ""aggressive"" might not fold so much.
+- Actually, Type D ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The learner folded 4/4 times to bets. So the opponent should be bluffing a lot. But it only bet 4/7 times. This is somewhat consistent with early adaptation.
+- But the opponent folding 3 times when facing a bet is less consistent with an aggressive adaptive type.
+
+Type E (cautious): Bets and calls only with King, otherwise checks or folds.
+- The opponent bet 4 times. If it only bets with King, and King is 1/3 of cards, in 7 opportunities we'd expect about 2-3 bets. 4 is a bit high but possible.
+- The opponent folded 3 times when facing a bet. If it only calls with King, folding with J or Q is consistent.
+- The opponent checked with Jack in hand 5. This is consistent with Type E (checks with non-King).
+- But wait - in hand 1, the opponent folded to a bet. If the opponent had J or Q, folding is consistent with Type E.
+- In hands 6 and 8, the opponent checked as Player 1, then folded to my bet. If the opponent had J or Q, checking and then folding is consistent with Type E.
+- But the opponent bet in hands 2, 3, 4, 7. For Type E, these would all need to be Kings. That's 4 Kings out of 7 hands. The probability of getting King 4 times out of 7 is C(7,4)*(1/3)^4*(2/3)^3 = 35 * (1/81) * (8/27) = 35*8/2187 ≈ 0.128. That's possible but not very likely.
+
+Wait, let me reconsider. In Kuhn Poker, each hand uses 3 cards (J, Q, K) and each player gets one. So in each hand, the opponent gets one of 3 cards. The probability of getting King is 1/3.
+
+For Type E to bet 4 times out of 7, it would need King 4 times. P = C(7,4)*(1/3)^4*(2/3)^3 ≈ 0.128. Possible but low.
+
+Actually, let me reconsider the structure. In each hand, 3 cards are dealt, 2 are used (one for each player). So the opponent gets one of the 3 cards with probability 1/3 for each.
+
+Let me reconsider Type B more carefully:
+- Equilibrium strategy for Player 1: Bet with K (always), bet with J (1/3 probability), check with Q.
+- Equilibrium strategy for Player 2 facing check: Bet with K (always), check with J, check/bet with Q (1/2 each).
+- Equilibrium strategy for Player 2 facing bet: Call with K, call with Q (1/2), fold with J.
+
+The opponent's actions:
+- As Player 1 (hands 2, 4, 6, 8): Bet, Bet, Check, Check. 
+  - If equilibrium: Bet with K, sometimes with J, check with Q.
+  - 2 bets and 2 checks out of 4. This is consistent with equilibrium (expected ~1.33 bets out of 4 if only K bets, but with J bluffing it's more like 2).
+  
+- As Player 2 facing check (hands 3, 5, 7): Bet, Check, Bet.
+  - If equilibrium: Bet with K, check with J, 50/50 with Q.
+  - 2 bets and 1 check out of 3. Consistent.
+
+- As Player 2 facing bet (hand 1): Fold.
+  - If equilibrium: Fold with J, call with Q (50%), call with K.
+  - Folding is consistent with having J.
+
+Overall, Type B seems quite consistent. The opponent's behavior looks like equilibrium play.
+
+Now let me reconsider Type D:
+- ""Starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+- The learner folded 4/4 times to the opponent's bets. This is a strong signal.
+- If the opponent is adaptive, by hand 7 (the 4th time the learner folds), it should be bluffing more aggressively.
+- But the opponent only bet 4/7 times. If it's adapting to exploit, it might bet more.
+- However, the opponent also folded 3 times when facing a bet. An adaptive type that's becoming aggressive might not fold so readily.
+- Actually, Type D says ""bluffs with any card once the learner has folded to its bets often."" The key question is whether 4 folds is ""often enough"" to trigger the adaptation. With only 8 hands, maybe the adaptation hasn't fully kicked in yet.
+- But the opponent folding 3 times when facing a bet is less consistent with an aggressive adaptive type.
+
+Let me also reconsider Type C:
+- ""Bets and calls with almost any card.""
+- The opponent bet 4/7 times. ""Almost any card"" would suggest 6/7 or 7/7.
+- The opponent folded 3 times when facing a bet. ""Calls with almost any card"" would suggest very few folds.
+- This is quite inconsistent with Type C.
+
+Let me assign probabilities:
+- Type A: 0.00 (never bets, but opponent bet 4 times)
+- Type B: 0.55 (equilibrium play is consistent with the observed behavior)
+- Type C: 0.05 (too many folds for ""calls with almost any card"")
+- Type D: 0.30 (adaptive could explain the pattern, but the folding behavior is less consistent)
+- Type E: 0.10 (possible but 4 bets out of 7 is high for ""only bets with King"")
+
+Wait, let me reconsider. The opponent's behavior:
+- Bets: 4 times (hands 2, 3, 4, 7)
+- Checks: 3 times (hands 5, 6, 8)
+- Folds: 3 times (hands 1, 6, 8) - wait, hands 6 and 8 the opponent checked first, then I bet, then they folded. So the fold is a response to my bet.
+
+Actually, let me recount:
+- Hand 1: Opponent (P2) faces bet → folds
+- Hand 2: Opponent (P1) → bets
+- Hand 3: Opponent (P2) faces check → bets
+- Hand 4: Opponent (P1) → bets
+- Hand 5: Opponent (P2) faces check → checks
+- Hand 6: Opponent (P1) → checks, then faces my bet → folds
+- Hand 7: Opponent (P2) faces check → bets
+- Hand 8: Opponent (P1) → checks, then faces my bet → folds
+
+So the opponent:
+- As P1: Bet (2, 4), Check (6, 8) → 2 bets, 2 checks out of 4
+- As P2 facing check: Bet (3, 7), Check (5) → 2 bets, 1 check out of 3
+- As P2 facing bet: Fold (1, 6, 8) → 3 folds out of 3
+
+The opponent NEVER called a bet. This is interesting.
+
+For Type B (equilibrium):
+- As P2 facing bet: Call with K, call with Q (50%), fold with J.
+- Folding 3/3 times could happen if the opponent had J all 3 times, or Q and folded (50% chance each).
+- P(fold 3/3 | equilibrium) depends on card distribution. If all 3 were J: (1/3)^3 = 1/27. If some were Q: more complex.
+- Actually, the probability of folding 3/3 in equilibrium is not that low. If the opponent has J (1/3) or Q and folds (1/3 * 1/2 = 1/6), the fold probability per hand is 1/3 + 1/6 = 1/2. So P(3 folds) = (1/2)^3 = 1/8. That's reasonable.
+
+For Type E (cautious - only bets/calls with K):
+- As P1: Bets only with K. 2 bets out of 4 means 2 Kings out of 4. P = C(4,2)*(1/3)^2*(2/3)^2 = 6*4/81 = 24/81 ≈ 0.30
+- As P2 facing check: Bets only with K. 2 bets out of 3 means 2 Kings out of 3. P = C(3,2)*(1/3)^2*(2/3) = 3*2/27 = 6/27 ≈ 0.22
+- As P2 facing bet: Calls only with K, folds otherwise. 3 folds out of 3 means 0 Kings out of 3. P = (2/3)^3 = 8/27 ≈ 0.30
+- Combined: 0.30 * 0.22 * 0.30 ≈ 0.02. Very low.
+
+Hmm, but these aren't independent because the cards are dealt from a 3-card deck. Let me not overcomplicate this.
+
+For Type D (adaptive):
+- The key feature is ""bluffs with any card once the learner has folded to its bets often.""
+- The learner folded 4/4 times. This is very strong evidence of folding.
+- But the opponent still checked in hands 6 and 8 (as P1). If it's adapting to bluff more, why check?
+- Unless the adaptation hasn't fully kicked in, or the opponent is still in the ""equilibrium-like"" phase.
+- The opponent folding 3/3 when facing a bet is less consistent with an aggressive adaptive type.
+- But early in the game (8 hands), the adaptation might not be fully expressed.
+
+I think the most likely type is B (equilibrium), with some probability for D.
+
+Let me finalize:
+- Type A: 0.00 (never bets - completely ruled out by 4 bets)
+- Type B: 0.55 (equilibrium play fits well)
+- Type C: 0.05 (too passive - 3 folds when facing bets, only 4/7 bets)
+- Type D: 0.30 (adaptive could explain, but the folding behavior is less consistent)
+- Type E: 0.10 (possible but 4 bets is high for King-only)
+
+Actually, let me reconsider. The opponent's behavior of folding 3/3 when facing a bet is notable. In equilibrium, this is possible but not the most likely outcome. For Type E, this is very consistent (folds with non-King). For Type D, this is less consistent (an aggressive type wouldn't fold so much).
+
+But the 4 bets out of 7 opportunities is the key discriminator:
+- Type A: 0 bets expected → 0.00
+- Type B: ~3-4 bets expected → fits well
+- Type C: ~6-7 bets expected → doesn't fit
+- Type D: starts at ~3-4, increases → could fit early game
+- Type E: ~2-3 bets expected → 4 is a bit high
+
+I'll go with:
+- Type A: 0.00
+- Type B: 0.50
+- Type C: 0.05
+- Type D: 0.35
+- Type E: 0.10
+
+Hmm, actually let me think more carefully about Type D. The description says ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The learner folded 4/4 times. This is a very strong signal. If the opponent is Type D, by hand 7-8, it should be bluffing more. But the opponent checked in hands 6 and 8.",200.26,4096,679,length,False,False,False,False,,,,,,,,,,,,,,
+maniac_01,1,Maniac,Type C,1538784482,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:30:58+00:00,"{""probs"": {""Type A"": 0.00, ""Type B"": 0.10, ""Type C"": 0.05, ""Type D"": 0.80, ""Type E"": 0.05}, ""prediction"": ""Type D"", ""evidence"": ""The opponent repeatedly called and bluffed with the Jack (Hands 1, 3, 5) while also showing equilibrium-like passivity (checking King in Hand 2, folding in Hand 7), matching an adaptive bot that blends near-equilibrium play with aggressive bluffs from any card.""}","Let me analyze each hand carefully to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand:
+
+**Hand 1:** You are Player 1, hold King. You bet. Opponent called. Showdown: opponent had Jack. You won 2 chips.
+- Opponent called a bet with Jack. This is aggressive - calling with a weak card (Jack is the lowest).
+- Type A: never bets, calls only with King. Would NOT call with Jack. ✗
+- Type B: equilibrium - calls with Queen sometimes, but calling with Jack is not equilibrium. ✗
+- Type C: very aggressive, bets and calls with almost any card. Would call with Jack. ✓
+- Type D: adaptive, starts close to equilibrium but bluffs more. Calling with Jack is aggressive. Possible.
+- Type E: cautious, bets and calls only with King. Would NOT call with Jack. ✗
+
+**Hand 2:** You are Player 2, hold Jack. Opponent checked. You checked. Showdown: opponent had King. You lost 1 chip.
+- Opponent had King and checked. In equilibrium, King should value-bet. Checking King is passive.
+- Type A: never bets. Would check King. ✓
+- Type B: equilibrium - value-bets King. Would NOT check King. ✗
+- Type C: very aggressive, bets with almost any card. Would NOT check King. ✗
+- Type D: starts close to equilibrium. Would likely bet King. ✗
+- Type E: cautious, bets only with King. Wait - ""bets and calls only with the King"" - this means they DO bet with King. So checking King contradicts Type E. ✗
+
+Wait, let me re-read Type E: ""cautious: bets and calls only with the King, otherwise checks or folds."" This means with King, they bet. With other cards, they check or fold. So checking King contradicts Type E.
+
+Actually, wait. Let me re-read Type A: ""very passive: never bets, calls only with the King, otherwise checks or folds."" So Type A never bets. With King, they would check (since they never bet). ✓
+
+Type E: ""cautious: bets and calls only with the King, otherwise checks or folds."" With King, they bet. So checking King contradicts Type E. ✗
+
+So Hand 2 strongly suggests Type A (never bets, so checks King).
+
+**Hand 3:** You are Player 1, hold King. You bet. Opponent called. Showdown: opponent had Jack. You won 2 chips.
+- Same as Hand 1. Opponent called with Jack. Aggressive.
+- Type A: would NOT call with Jack. ✗
+- Type C: would call with Jack. ✓
+- Type D: possible if adaptive.
+
+**Hand 4:** You are Player 2, hold Queen. Opponent checked. You checked. Showdown: opponent had Jack. You won 1 chip.
+- Opponent had Jack and checked. 
+- Type A: never bets, checks with non-King. ✓
+- Type B: equilibrium - checks Queen, but with Jack might bluff. Checking Jack is possible in equilibrium (bluffing with Jack is part of equilibrium, but not always). Actually, in equilibrium, Jack bluffs sometimes. Checking is also possible. ✓
+- Type C: very aggressive, bets with almost any card. Would likely bet with Jack. ✗
+- Type D: starts close to equilibrium. Could check Jack. ✓
+- Type E: cautious, checks or folds with non-King. Would check Jack. ✓
+
+**Hand 5:** You are Player 1, hold Queen. You checked. Opponent bet. You called. Showdown: opponent had Jack. You won 2 chips.
+- Opponent had Jack and bet. This is a bluff with the lowest card.
+- Type A: never bets. ✗
+- Type B: equilibrium - bluffs with Jack sometimes. ✓
+- Type C: very aggressive, bets with almost any card. ✓
+- Type D: adaptive, bluffs with any card once learner folds often. ✓
+- Type E: cautious, bets only with King. Would NOT bet with Jack. ✗
+
+**Hand 6:** You are Player 2, hold Queen. Opponent bet. You folded. No showdown.
+- Opponent bet. We don't know their card.
+- Type A: never bets. ✗
+- Type B: equilibrium - could bet (bluff or value). ✓
+- Type C: very aggressive, bets with almost any card. ✓
+- Type D: adaptive, could bet. ✓
+- Type E: cautious, bets only with King. Could be King. ✓
+
+**Hand 7:** You are Player 1, hold King. You bet. Opponent folded. No showdown.
+- Opponent folded to a bet.
+- Type A: never bets, calls only with King, otherwise checks or folds. Would fold to a bet with non-King. ✓
+- Type B: equilibrium - folds to bets sometimes. ✓
+- Type C: very aggressive, calls with almost any card. Would NOT fold. ✗
+- Type D: adaptive - could fold. ✓
+- Type E: cautious, folds with non-King. ✓
+
+**Hand 8:** You are Player 2, hold Queen. Opponent bet. You called. Showdown: opponent had King. You lost 2 chips.
+- Opponent had King and bet. Value bet with King.
+- Type A: never bets. ✗
+- Type B: equilibrium - value-bets King. ✓
+- Type C: very aggressive, bets with almost any card. ✓
+- Type D: adaptive, could bet King. ✓
+- Type E: cautious, bets with King. ✓
+
+Now let me summarize the evidence:
+
+Hand 1: Opponent called with Jack → Rules out A, E. Supports C, D.
+Hand 2: Opponent checked King → Rules out B, C, E. Supports A.
+Hand 3: Opponent called with Jack → Rules out A, E. Supports C, D.
+Hand 4: Opponent checked Jack → Supports A, B, D, E. Against C.
+Hand 5: Opponent bet with Jack → Rules out A, E. Supports B, C, D.
+Hand 6: Opponent bet (unknown card) → Rules out A. Supports B, C, D, E.
+Hand 7: Opponent folded to bet → Rules out C. Supports A, B, D, E.
+Hand 8: Opponent bet with King → Rules out A. Supports B, C, D, E.
+
+Let me count contradictions:
+- Type A: Contradicted by Hand 1 (called with Jack), Hand 3 (called with Jack), Hand 5 (bet with Jack), Hand 6 (bet), Hand 8 (bet with King). But supported by Hand 2 (checked King), Hand 4 (checked Jack), Hand 7 (folded).
+  - Actually, Type A ""never bets"" - so Hand 5, 6, 8 where opponent bets rule out A. And Hand 1, 3 where opponent calls with Jack rule out A (A only calls with King).
+  - Type A is very strongly contradicted.
+
+- Type B: Contradicted by Hand 2 (checked King - B should value-bet King). But supported by Hand 5 (bluff with Jack), Hand 8 (value bet King).
+  - Hand 2 is a strong contradiction for B.
+  - But B is mixed strategy, so checking King isn't impossible, just unlikely.
+  - Actually, in Kuhn poker equilibrium, King always bets (value bet). So checking King is a strong contradiction.
+
+- Type C: Contradicted by Hand 2 (checked King - C should bet), Hand 7 (folded - C should call). But supported by Hand 1, 3 (called with Jack), Hand 5 (bet with Jack).
+  - Hand 2 and 7 are strong contradictions for C.
+
+- Type D: Supported by most hands. Hand 1, 3 (called with Jack - aggressive), Hand 5 (bet with Jack - bluff), Hand 6 (bet), Hand 8 (bet King). Hand 2 (checked King) is a slight contradiction but D ""starts close to equilibrium"" so early on might check King. Hand 7 (folded) is possible for D.
+  - D seems to fit well overall.
+
+- Type E: Contradicted by Hand 1 (called with Jack - E only calls with King), Hand 3 (called with Jack), Hand 5 (bet with Jack - E only bets King). But supported by Hand 2 (checked King... wait, E bets with King, so checking King contradicts E too).
+  - Actually, E ""bets and calls only with the King"" - so with King, E bets. Hand 2 shows opponent checked King, which contradicts E.
+  - E is strongly contradicted.
+
+Let me reconsider more carefully:
+
+The key contradictions:
+- Hand 1 & 3: Opponent called with Jack. This rules out A (only calls with King) and E (only calls with King).
+- Hand 2: Opponent checked King. This rules out B (always value-bets King in equilibrium), C (bets with almost any card), and E (bets with King).
+- Hand 5: Opponent bet with Jack. This rules out A (never bets) and E (bets only with King).
+- Hand 7: Opponent folded to bet. This rules out C (calls with almost any card).
+- Hand 8: Opponent bet with King. This rules out A (never bets).
+
+So:
+- Type A: Contradicted by Hands 1, 3, 5, 6, 8. Very unlikely. ~0.00
+- Type B: Contradicted by Hand 2 (checked King). But B is mixed strategy... In Kuhn poker equilibrium, King always bets. So this is a strong contradiction. ~0.05-0.10
+- Type C: Contradicted by Hands 2, 7. ~0.05-0.10
+- Type D: Fits most hands. Hand 2 (checked King) could be early equilibrium behavior. Hand 7 (folded) is possible. The aggressive behavior (calling with Jack, betting with Jack) could be the ""bluffs with any card once learner folds often"" part. ~0.70-0.80
+- Type E: Contradicted by Hands 1, 2, 3, 5. Very unlikely. ~0.00
+
+Wait, let me reconsider Type D more carefully. Type D ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+
+Looking at the sequence:
+- Hand 1: Called with Jack (aggressive, not equilibrium)
+- Hand 2: Checked King (equilibrium-like, passive)
+- Hand 3: Called with Jack (aggressive)
+- Hand 4: Checked Jack (equilibrium-like)
+- Hand 5: Bet with Jack (bluff, aggressive)
+- Hand 6: Bet (aggressive)
+- Hand 7: Folded to bet (passive)
+- Hand 8: Bet with King (value bet, equilibrium-like)
+
+The pattern seems mixed. The opponent is sometimes aggressive (calling/betting with Jack) and sometimes passive (checking King, folding). This could be Type D adapting, or it could be Type B with some variance.
+
+Actually, let me reconsider. In Kuhn poker equilibrium:
+- With King: always bet
+- With Queen: always check
+- With Jack: bet with probability 1/3 (bluff), check with probability 2/3
+- Facing a bet with King: always call
+- Facing a bet with Queen: call with probability 1/2
+- Facing a bet with Jack: fold
+
+So in equilibrium:
+- Hand 1: Opponent has Jack, faces bet. Should fold. But called. This is NOT equilibrium.
+- Hand 2: Opponent has King, is Player 1. Should bet. But checked. This is NOT equilibrium.
+- Hand 3: Same as Hand 1. Not equilibrium.
+- Hand 4: Opponent has Jack, is Player 1. Could check (2/3 probability). ✓
+- Hand 5: Opponent has Jack, is Player 2, faces check. Should check (Jack doesn't bet in equilibrium... wait, actually in equilibrium, Jack bluffs 1/3 of the time). So betting with Jack is possible but only 1/3.
+- Hand 6: Opponent bets. Could be bluff or value.
+- Hand 7: Opponent folds to bet. If opponent has Jack or Queen, folding is correct. ✓
+- Hand 8: Opponent has King, is Player 1. Should bet. ✓
+
+So the opponent's behavior is inconsistent with pure equilibrium. The calling with Jack (Hands 1, 3) and checking King (Hand 2) are both non-equilibrium. This suggests either Type C (too aggressive in some ways but too passive in others) or Type D (adaptive).
+
+Actually, Type D ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The learner folded in Hand 6. After that, the opponent might bluff more. But the aggressive behavior (calling with Jack) appears in Hands 1 and 3, before the fold in Hand 6.
+
+Hmm, but Type D could also be interpreted as: the opponent is generally aggressive and adapts. The calling with Jack could be the ""bluffs with any card"" part.
+
+Let me also consider that Type B in equilibrium would:
+- Not call with Jack (should fold) - contradicts Hands 1, 3
+- Bet with King - contradicts Hand 2
+- But would bet with Jack sometimes (bluff) - consistent with Hand 5
+- Would value bet King - consistent with Hand 8
+
+The contradictions with B are significant (calling with Jack twice, checking King once).
+
+I think the best fit is Type D, with some probability for Type B (since some behaviors are equilibrium-like).
+
+Let me assign probabilities:
+- Type A: 0.00 (strongly contradicted by multiple hands)
+- Type B: 0.10 (some equilibrium-like behavior but key contradictions)
+- Type C: 0.05 (contradicted by checking King and folding)
+- Type D: 0.80 (best overall fit - aggressive with bluffs, some passive behavior)
+- Type E: 0.05 (contradicted by calling with Jack, but some passive behavior)
+
+Actually, let me reconsider. The opponent:
+- Called with Jack twice (Hands 1, 3) - very aggressive
+- Checked King (Hand 2) - very passive
+- Checked Jack (Hand 4) - normal
+- Bet with Jack (Hand 5) - bluff
+- Bet (Hand 6) - aggressive
+- Folded to bet (Hand 7) - passive
+- Bet with King (Hand 8) - value bet
+
+The mix of very aggressive (calling with Jack, betting with Jack) and very passive (checking King, folding) is interesting. Type D ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often"" - this could explain the pattern if the opponent is adapting.
+
+But actually, the calling with Jack in Hands 1 and 3 happens before any fold by the learner. The learner's first fold is Hand 6. So the aggressive behavior precedes the fold. This doesn't perfectly fit Type D's description.
+
+However, Type D could also be interpreted more broadly as an adaptive opponent that is generally aggressive. Or the ""starts close to equilibrium"" part might not be perfectly equilibrium.
+
+I'll go with Type D as the most likely, with some probability for B.
+
+Let me finalize:
+- Type A: 0.00
+- Type B: 0.10
+- Type C: 0.05
+- Type D: 0.80
+- Type E: 0.05
+
+These sum to 1.00. Good.
+
+Actually, let me reconsider Type C. Type C ""bets and calls with almost any card."" The opponent:
+- Called with Jack (Hands 1, 3) ✓
+- Checked King (Hand 2) ✗ (C should bet)
+- Checked Jack (Hand 4) ✗ (C should bet)
+- Bet with Jack (Hand 5) ✓
+- Bet (Hand 6) ✓
+- Folded to bet (Hand 7) ✗ (C should call)
+- Bet with King (Hand 8) ✓
+
+C is contradicted by 3 hands (2, 4, 7). That's significant. Maybe 0.05 is right.
+
+For Type D: ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+- The opponent does show some equilibrium-like behavior (checking Jack, folding to bet, value betting King)
+- But also shows aggressive behavior (calling with Jack, betting with Jack)
+- The ""bluffs with any card"" part explains the Jack bluffs
+- The ""starts close to equilibrium"" explains the checking King and folding
+
+I'll stick with my assessment. Type D is the best fit.
+
+Let me adjust slightly:
+- Type A: 0.00
+- Type B: 0.10
+- Type C: 0.05
+- Type D: 0.80
+- Type E: 0.05
+
+Sum = 1.00 ✓",194.4,4011,660,stop,True,True,True,True,1.0,Type D,Type D,0.05,2.9957,1.555,False,"The opponent repeatedly called and bluffed with the Jack (Hands 1, 3, 5) while also showing equilibrium-like passivity (checking King in Hand 2, folding in Hand 7), matching an adaptive bot that blends near-equilibrium play with aggressive bluffs from any card.",,0.0,0.1,0.05,0.8,0.05
+maniac_02,1,Maniac,Type C,621184583,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:34:12+00:00,,"Let me analyze each hand carefully to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand:
+
+**Hand 1:** You are Player 1 with King. You bet. Opponent called. Showdown: opponent had Jack.
+- Opponent called a bet with Jack. 
+- Type A: never bets, calls only with King. Would NOT call with Jack. Contradicts.
+- Type B: equilibrium strategy. Would call with Jack? In equilibrium, Player 2 facing a bet with Jack would fold (Jack is the worst card, calling with Jack is not in equilibrium). Actually, in Kuhn poker equilibrium, Player 2 with Jack facing a bet should fold. So this contradicts Type B.
+- Type C: very aggressive, bets and calls with almost any card. Would call with Jack. Consistent.
+- Type D: adaptive, starts close to equilibrium but bluffs with any card once learner folds often. Calling with Jack is aggressive. Could be consistent if adaptive.
+- Type E: cautious, bets and calls only with King. Would NOT call with Jack. Contradicts.
+
+So Hand 1 eliminates Type A and Type E. Type B also seems unlikely (calling with Jack is not equilibrium). Type C and D are consistent.
+
+**Hand 2:** You are Player 2 with Jack. Opponent bet. You folded.
+- Opponent bet. We don't know opponent's card.
+- Type A: never bets. Contradicts.
+- Type B: value-bets King, sometimes bluffs with Jack. Could bet with King or Jack.
+- Type C: bets with almost any card. Consistent.
+- Type D: could bet. Consistent.
+- Type E: bets only with King. Could be consistent if opponent had King.
+
+This hand is consistent with B, C, D, E but not A.
+
+**Hand 3:** You are Player 1 with Queen. You checked. Opponent bet. You folded.
+- Opponent bet after you checked.
+- Type A: never bets. Contradicts.
+- Type B: checks Queen, but could bet with King or bluff with Jack. If opponent had King, they'd value bet. If Jack, they might bluff. Consistent.
+- Type C: bets with almost any card. Consistent.
+- Type D: could bet. Consistent.
+- Type E: bets only with King. Consistent if opponent had King.
+
+This eliminates Type A.
+
+**Hand 4:** You are Player 2 with King. Opponent checked. You bet. Opponent folded.
+- Opponent checked (didn't bet) and then folded to your bet.
+- Type A: never bets, folds to bets (except with King). If opponent had Jack or Queen, they'd fold. If King, they'd call. Consistent if opponent had Jack or Queen.
+- Type B: checks Queen, value-bets King. If opponent had Queen, they'd check. Facing your bet with Queen, they might call sometimes. If opponent had Jack, they'd check and fold. Consistent.
+- Type C: very aggressive, would likely call or bet. Folding is inconsistent with Type C.
+- Type D: could fold if not in bluffing mode. Consistent.
+- Type E: checks and folds unless King. Consistent if opponent had Jack or Queen.
+
+This hand is somewhat inconsistent with Type C (very aggressive would likely call).
+
+**Hand 5:** You are Player 1 with Queen. You checked. Opponent checked. Showdown: opponent had King.
+- Opponent checked with King.
+- Type A: never bets, calls only with King. But here opponent checked with King instead of... wait, Type A ""never bets, calls only with the King, otherwise checks or folds."" So Type A would check with King? Actually, Type A is ""very passive: never bets, calls only with the King, otherwise checks or folds."" This means Type A never initiates a bet. If Player 1 checks, Type A as Player 2 would... check? Or call? Type A ""calls only with the King"" - this might mean when facing a bet, they call only with King. But if Player 1 checks, Type A would just check back. So checking with King is consistent with Type A.
+- Type B: value-bets King. In equilibrium, Player 2 with King after Player 1 checks should bet (value bet). Checking with King is NOT consistent with Type B.
+- Type C: very aggressive, would bet with King. Checking is inconsistent.
+- Type D: starts close to equilibrium, so would likely bet with King. Checking is somewhat inconsistent.
+- Type E: bets only with King. Wait, ""bets and calls only with the King."" So Type E WOULD bet with King. Checking with King contradicts Type E.
+
+Hmm, this is interesting. Hand 5 shows opponent checking with King, which contradicts Type B, C, D, and E. It's most consistent with Type A.
+
+Wait, let me re-read Type A: ""very passive: never bets, calls only with the King, otherwise checks or folds."" So Type A never bets. If they have King and Player 1 checks, Type A would check back (since they never bet). This is consistent.
+
+But Hand 1 showed opponent calling with Jack, which contradicts Type A. And Hand 3 showed opponent betting, which contradicts Type A.
+
+So we have contradictions. Let me reconsider.
+
+Actually, wait. Let me re-read the types more carefully.
+
+Type A: ""very passive: never bets, calls only with the King, otherwise checks or folds.""
+- Never bets: contradicted by Hand 3 (opponent bet after you checked)
+- Calls only with King: contradicted by Hand 1 (opponent called with Jack)
+
+Type E: ""cautious: bets and calls only with the King, otherwise checks or folds.""
+- Bets only with King: Hand 3 opponent bet - could be King. Hand 2 opponent bet - could be King.
+- Calls only with King: Hand 1 opponent called with Jack - contradicts Type E.
+- But Hand 5: opponent checked with King. Type E says ""bets... only with the King"" - this means they DO bet with King. So checking with King contradicts Type E.
+
+Hmm, this is tricky. Let me reconsider.
+
+Actually, ""bets and calls only with the King"" could mean ""the only card with which they bet or call is King."" So they would bet with King and call with King, but check/fold with Jack and Queen. In Hand 5, opponent had King and checked. This contradicts Type E.
+
+Let me reconsider Type B: ""plays the equilibrium strategy: value-bets the King, sometimes bluffs with the Jack, checks the Queen, and calls with the Queen only some of the time.""
+- In equilibrium, Player 2 with King after Player 1 checks should bet (value bet). Hand 5 shows checking with King. This contradicts Type B.
+- But ""sometimes"" bluffs with Jack - there's randomness.
+- Actually, in Kuhn poker equilibrium, Player 2 with King after check should always bet. So checking King contradicts B.
+
+Let me reconsider Type D: ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+- Starts close to equilibrium: would value-bet King. Hand 5 contradicts.
+- But maybe the adaptation hasn't kicked in yet, or maybe it's not perfectly equilibrium.
+
+Hmm, let me look at this differently. Let me tally which hands are consistent/inconsistent with each type.
+
+**Hand 1:** Opponent called with Jack (facing your bet as P1 with King).
+- A: INCONSISTENT (calls only with King)
+- B: INCONSISTENT (in equilibrium, P2 with Jack facing bet should fold)
+- C: CONSISTENT (calls with almost any card)
+- D: POSSIBLY CONSISTENT (if adaptive/aggressive phase)
+- E: INCONSISTENT (calls only with King)
+
+**Hand 2:** Opponent bet (you're P2 with Jack, you folded).
+- A: INCONSISTENT (never bets)
+- B: CONSISTENT (could be value-betting King or bluffing Jack)
+- C: CONSISTENT (bets with almost any card)
+- D: CONSISTENT
+- E: CONSISTENT (if had King)
+
+**Hand 3:** Opponent bet after you checked (you're P1 with Queen, you folded).
+- A: INCONSISTENT (never bets)
+- B: CONSISTENT (value-bet King or bluff Jack)
+- C: CONSISTENT
+- D: CONSISTENT
+- E: CONSISTENT (if had King)
+
+**Hand 4:** Opponent checked, then folded to your bet (you're P2 with King).
+- A: CONSISTENT (never bets, folds to bet unless King)
+- B: CONSISTENT (if had Jack or Queen, would check and fold/call)
+- C: INCONSISTENT (very aggressive, would likely call)
+- D: CONSISTENT (if not in aggressive phase)
+- E: CONSISTENT (if had Jack or Queen, would check and fold)
+
+**Hand 5:** Opponent checked with King (you're P1 with Queen, both check, showdown).
+- A: CONSISTENT (never bets, so checks even with King)
+- B: INCONSISTENT (should value-bet King)
+- C: INCONSISTENT (very aggressive, would bet King)
+- D: INCONSISTENT (starts close to equilibrium, should bet King)
+- E: INCONSISTENT (bets with King)
+
+**Hand 6:** Opponent checked with King (you're P2 with Jack, both check, showdown).
+- A: CONSISTENT (never bets)
+- B: INCONSISTENT (should value-bet King)
+- C: INCONSISTENT (would bet King)
+- D: INCONSISTENT (should bet King)
+- E: INCONSISTENT (bets with King)
+
+**Hand 7:** Opponent bet after you checked (you're P1 with Queen, you called, opponent had King).
+- A: INCONSISTENT (never bets)
+- B: CONSISTENT (value-bet King)
+- C: CONSISTENT
+- D: CONSISTENT
+- E: CONSISTENT (bets with King)
+
+**Hand 8:** Opponent bet (you're P2 with Jack, you folded).
+- A: INCONSISTENT (never bets)
+- B: CONSISTENT (value-bet King or bluff Jack)
+- C: CONSISTENT
+- D: CONSISTENT
+- E: CONSISTENT (if had King)
+
+Now let me count consistencies:
+
+Type A: Consistent with H4, H5, H6. Inconsistent with H1, H2, H3, H7, H8. (3/8)
+Type B: Consistent with H2, H3, H4, H7, H8. Inconsistent with H1, H5, H6. (5/8)
+Type C: Consistent with H1, H2, H3, H7, H8. Inconsistent with H4, H5, H6. (5/8)
+Type D: Consistent with H1(maybe), H2, H3, H4, H7, H8. Inconsistent with H5, H6. (6/8)
+Type E: Consistent with H2, H3, H4, H7, H8. Inconsistent with H1, H5, H6. (5/8)
+
+Wait, but the key contradictions are:
+- H1: Opponent called with Jack → eliminates A, E, and makes B very unlikely
+- H5, H6: Opponent checked with King → eliminates B, C, D, E (all should bet King)
+- H2, H3, H7, H8: Opponent bet → eliminates A
+
+The most striking pattern is:
+- Opponent bets multiple times (H2, H3, H7, H8) → not Type A
+- Opponent called with Jack (H1) → not Type A, not Type E, not Type B
+- Opponent checked with King twice (H5, H6) → not Type B, C, D, E
+
+This is contradictory. No single type perfectly fits. But we need to find the best fit.
+
+Let me think about this more carefully. The opponent:
+- Bets frequently (H2, H3, H7, H8) - 4 times out of 8
+- Called with Jack (H1) - aggressive
+- Checked with King twice (H5, H6) - passive with King
+- Folded to a bet with King (H4) - passive
+
+The pattern of betting frequently but checking with King is unusual. 
+
+Type D is ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" 
+
+Looking at the sequence:
+- H2: Opponent bets, you fold
+- H3: Opponent bets, you fold
+- H4: Opponent checks, you bet, opponent folds
+- H8: Opponent bets, you fold
+
+The learner folds to bets in H2, H3, H8. This could trigger Type D's adaptation. But Type D ""starts close to equilibrium"" which means initially it should value-bet King. Yet in H5 and H6, it checks with King.
+
+Actually, wait. Let me reconsider. Maybe the ""checking with King"" in H5 and H6 could be explained by Type D if it's in a weird adaptive state, or maybe by Type A.
+
+Actually, let me reconsider Type A more carefully. Type A ""never bets, calls only with the King, otherwise checks or folds."" 
+
+But in H1, the opponent called with Jack. This directly contradicts Type A.
+In H2, H3, H7, H8, the opponent bet. This directly contradicts Type A.
+
+So Type A is very unlikely.
+
+Let me reconsider. The opponent's behavior:
+- Bets: H2, H3, H7, H8 (4 times)
+- Checks: H4, H5, H6 (3 times)
+- Calls: H1 (1 time, with Jack)
+- Folds: H4 (1 time, to your bet)
+
+The betting pattern is aggressive (4 bets out of 8 hands where they act). But they also check with King twice, which is very passive.
+
+Type C is ""very aggressive: bets and calls with almost any card."" This explains H1 (calling with Jack), H2, H3, H7, H8 (betting). But H4 (folding to bet), H5, H6 (checking with King) are inconsistent.
+
+Type D is ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" 
+
+The learner folds in H2, H3, H8. So by H8, the opponent has seen the learner fold 3 times. This could trigger the ""bluffs with any card"" behavior. But the checking with King in H5 and H6 is still problematic.
+
+Actually, wait. Let me re-examine H5 and H6. In H5, you're P1 with Queen, you check, opponent checks. In H6, you're P2 with Jack, opponent checks, you check. 
+
+In H5, opponent is P2. If opponent has King and is Type D starting close to equilibrium, they should bet. But they checked. This is a problem.
+
+In H6, opponent is P1. If opponent has King and is Type D starting close to equilibrium, they should bet. But they checked. This is also a problem.
+
+Hmm, but maybe Type D's ""starts close to equilibrium"" doesn't mean perfectly equilibrium. Maybe it's approximate. Or maybe the adaptation has caused it to deviate.
+
+Actually, let me think about this differently. The key distinguishing features:
+
+1. Opponent bets frequently (4/8 hands) → rules out A strongly
+2. Opponent called with Jack → rules out A, E strongly; makes B unlikely
+3. Opponent checked with King twice → rules out B, C, E strongly; makes D unlikely
+4. Opponent folded to a bet (H4) → rules out C strongly
+
+The most consistent type seems to be... none perfectly. But let me think about which type has the fewest contradictions.
+
+Type D: ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+- The ""bluffs with any card"" part could explain betting with non-King cards (H2, H3, H8 might be bluffs)
+- H7 is a value bet with King (consistent with equilibrium)
+- H1 calling with Jack could be the ""bluffs with any card"" adaptation
+- H4 folding could be equilibrium behavior (folding with Jack or Queen)
+- H5, H6 checking with King is the main problem
+
+But actually, if Type D is ""adaptive"" and has deviated from equilibrium, maybe it's not always betting King. The description says it ""starts close to equilibrium"" but adapts. Maybe the adaptation has caused it to check King sometimes.
+
+Actually, I think the most likely answer is Type D. Here's why:
+- The frequent betting (including with non-King cards) suggests aggression/bluffing
+- Calling with Jack (H1) suggests the ""bluffs with any card"" adaptation
+- The learner folding to bets (H2, H3, H8) would trigger the adaptation
+- The checking with King (H5, H6) could be a quirk of the adaptive strategy not being perfectly calibrated
+- H4 folding is consistent with a non-aggressive phase
+
+But Type C also fits many hands. Let me compare C and D more carefully.
+
+Type C: ""very aggressive: bets and calls with almost any card.""
+- H1: calls with Jack ✓
+- H2: bets ✓
+- H3: bets ✓
+- H4: folds to bet ✗ (very aggressive should call)
+- H5: checks with King ✗ (very aggressive should bet)
+- H6: checks with King ✗ (very aggressive should bet)
+- H7: bets with King ✓
+- H8: bets ✓
+- 5/8 consistent, 3/8 inconsistent
+
+Type D: ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+- H1: calls with Jack",198.64,4096,671,length,False,False,False,False,,,,,,,,,,,,,,
+maniac_03,1,Maniac,Type C,3147320240,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:37:31+00:00,"{""probs"": {""Type A"": 0.00, ""Type B"": 0.05, ""Type C"": 0.60, ""Type D"": 0.25, ""Type E"": 0.10}, ""prediction"": ""Type C"", ""evidence"": ""The opponent bet in 6 of 8 hands, bluffed with the Jack (Hand 2), and called with the Jack (Hand 5), matching the 'bets and calls with almost any card' profile of Type C, with only a single check-with-King (Hand 7) as a minor deviation.""}","Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand and note the opponent's actions:
+
+Hand 1: Player 1 (learner) has Jack, checks. Opponent (Player 2) bets. Learner folds. Opponent's card unknown.
+- Opponent bet when facing a check. This is aggressive behavior.
+
+Hand 2: Player 2 (learner) has Queen. Opponent (Player 1) bets. Learner calls. Showdown: opponent had Jack.
+- Opponent bet with Jack. This is a bluff (Jack is the lowest card).
+
+Hand 3: Player 1 (learner) has Queen, checks. Opponent (Player 2) bets. Learner folds. Opponent's card unknown.
+- Opponent bet when facing a check. Aggressive.
+
+Hand 4: Player 2 (learner) has Queen. Opponent (Player 1) bets. Learner calls. Showdown: opponent had King.
+- Opponent bet with King. This is a value bet.
+
+Hand 5: Player 1 (learner) has King, bets. Opponent (Player 2) calls. Showdown: opponent had Jack.
+- Opponent called with Jack. This is very aggressive - calling with the worst card.
+
+Hand 6: Player 2 (learner) has Queen. Opponent (Player 1) bets. Learner folds. Opponent's card unknown.
+- Opponent bet when facing a check. Aggressive.
+
+Hand 7: Player 1 (learner) has Queen, checks. Opponent (Player 2) checks. Showdown: opponent had King.
+- Opponent checked with King. This is passive - not value-betting the King.
+
+Hand 8: Player 2 (learner) has Queen. Opponent (Player 1) bets. Learner folds. Opponent's card unknown.
+- Opponent bet when facing a check. Aggressive.
+
+Now let me summarize the opponent's observed actions:
+- Bets: Hand 1 (unknown card), Hand 2 (Jack - bluff), Hand 3 (unknown card), Hand 4 (King - value), Hand 6 (unknown card), Hand 8 (unknown card)
+- Calls: Hand 5 (Jack - very aggressive call)
+- Checks: Hand 7 (King - passive, not value-betting)
+
+So the opponent:
+- Bets very frequently (6 out of 8 hands where they had the opportunity to act first or respond to a check)
+- Bluffed with Jack (Hand 2)
+- Called with Jack (Hand 5) - very aggressive
+- Checked with King (Hand 7) - this is unusual for most types
+
+Let me evaluate each type:
+
+Type A (very passive: never bets, calls only with King, otherwise checks or folds):
+- The opponent bet in multiple hands (1, 2, 3, 4, 6, 8). This completely contradicts Type A.
+- Probability: ~0.00
+
+Type B (equilibrium: value-bets King, sometimes bluffs with Jack, checks Queen, calls with Queen sometimes):
+- The opponent bet with Jack (bluff) - consistent with B
+- The opponent bet with King (value) - consistent with B
+- But the opponent also called with Jack (Hand 5) - NOT consistent with B (equilibrium doesn't call with Jack)
+- The opponent checked with King (Hand 7) - NOT consistent with B (B value-bets King)
+- The opponent bet very frequently - more than equilibrium would suggest
+- Probability: low, maybe 0.05-0.10
+
+Type C (very aggressive: bets and calls with almost any card):
+- Bets frequently: Yes (6 times)
+- Bluffs with Jack: Yes (Hand 2)
+- Calls with Jack: Yes (Hand 5)
+- But checked with King (Hand 7): This is slightly inconsistent with ""very aggressive"" but could be a rare exception
+- Overall very consistent with Type C
+- Probability: high, maybe 0.50-0.65
+
+Type D (adaptive: starts close to equilibrium, but bluffs with any card once learner folds often):
+- The learner folded in Hands 1, 3, 6, 8 (4 folds out of 6 times facing a bet)
+- The opponent's early behavior (Hands 1-4) shows betting with Jack (bluff) and King (value) - could be equilibrium-like
+- Later hands (6, 8) show continued betting - could be adaptive bluffing
+- But calling with Jack (Hand 5) is very aggressive and not typical of equilibrium or adaptive
+- The check with King (Hand 7) is odd for an adaptive type
+- Probability: moderate, maybe 0.15-0.25
+
+Type E (cautious: bets and calls only with King, otherwise checks or folds):
+- The opponent bet with Jack (Hand 2) - contradicts Type E
+- The opponent called with Jack (Hand 5) - contradicts Type E
+- The opponent checked with King (Hand 7) - consistent with Type E
+- But the frequent betting with non-King cards contradicts this
+- Probability: ~0.00-0.05
+
+Let me reconsider more carefully:
+
+The key observations:
+1. Opponent bets very frequently (6 times out of 8 hands)
+2. Opponent bluffed with Jack (Hand 2)
+3. Opponent called with Jack (Hand 5) - extremely aggressive
+4. Opponent checked with King (Hand 7) - the one passive action
+5. Opponent value-bet with King (Hand 4)
+
+The calling with Jack is the most distinctive feature. Only Type C would call with Jack. Type D might adapt but calling with Jack is beyond bluffing - it's calling with the worst card.
+
+The check with King (Hand 7) is the one action that doesn't fit Type C perfectly. But with 8 hands, one deviation is possible.
+
+Let me assign probabilities:
+- Type A: 0.00 (never bets - completely contradicted)
+- Type B: 0.05 (some elements match but calling with Jack and checking King don't)
+- Type C: 0.60 (most consistent - bets and calls with almost any card, one check with King is a minor deviation)
+- Type D: 0.25 (adaptive could explain the pattern, but calling with Jack is extreme)
+- Type E: 0.05 (one check with King matches but everything else contradicts)
+
+Wait, let me reconsider Type D more carefully. Type D ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The learner folded 4 times (Hands 1, 3, 6, 8). But the calling with Jack in Hand 5 is not really ""bluffing"" - it's calling. And the check with King in Hand 7 is odd.
+
+Actually, let me reconsider. The opponent's actions:
+- Hand 1: Bets (facing check) - aggressive
+- Hand 2: Bets with Jack - bluff
+- Hand 3: Bets (facing check) - aggressive
+- Hand 4: Bets with King - value bet
+- Hand 5: Calls with Jack - very aggressive
+- Hand 6: Bets (facing check) - aggressive
+- Hand 7: Checks with King - passive (inconsistent with most types except A and E)
+- Hand 8: Bets (facing check) - aggressive
+
+The check with King in Hand 7 is really the only action that doesn't fit Type C. For Type C, ""bets and calls with almost any card"" - checking with King could be a rare exception.
+
+I'll go with:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.60
+- Type D: 0.25
+- Type E: 0.10
+
+Actually, let me reconsider Type E. Type E ""bets and calls only with King, otherwise checks or folds."" The opponent bet with Jack (Hand 2) and called with Jack (Hand 5). These completely contradict Type E. So Type E should be very low, maybe 0.02.
+
+And Type D: The adaptive type starts close to equilibrium. In equilibrium, you'd bet King, sometimes bluff with Jack, check Queen. The opponent did bet with Jack and King, which is consistent. But calling with Jack is not equilibrium behavior. And the check with King is not equilibrium behavior. The ""adaptive"" part about bluffing more when learner folds could explain the frequent betting, but calling with Jack is beyond bluffing.
+
+Let me finalize:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.65
+- Type D: 0.20
+- Type E: 0.10
+
+Hmm, actually let me reconsider. The check with King in Hand 7 is notable. For Type C ""very aggressive: bets and calls with almost any card"" - checking with King is a significant deviation. But ""almost any card"" doesn't mean ""always."" One check out of 8 hands could be within the ""almost"" qualifier.
+
+I'll go with:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.60
+- Type D: 0.25
+- Type E: 0.10
+
+These sum to 1.00. Let me verify: 0.00 + 0.05 + 0.60 + 0.25 + 0.10 = 1.00. Good.
+
+Prediction: Type C
+Evidence: The opponent bet in 6 of 8 hands, bluffed with the Jack, and called with the Jack, demonstrating the ""bets and calls with almost any card"" pattern of Type C, with only one check (with King) as a minor deviation.",115.75,2355,667,stop,True,True,True,True,1.0,Type C,Type C,0.6,0.5108,0.235,True,"The opponent bet in 6 of 8 hands, bluffed with the Jack (Hand 2), and called with the Jack (Hand 5), matching the 'bets and calls with almost any card' profile of Type C, with only a single check-with-King (Hand 7) as a minor deviation.",,0.0,0.05,0.6,0.25,0.1
+nash_01,1,Nash,Type B,865025015,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:39:27+00:00,"{""probs"": {""Type A"": 0.00, ""Type B"": 0.15, ""Type C"": 0.00, ""Type D"": 0.10, ""Type E"": 0.75}, ""prediction"": ""Type E"", ""evidence"": ""The opponent bet only once in 8 hands (consistent with betting solely on King), folded readily to both bets faced, and checked with Queen and Jack, matching the cautious Type E profile of betting and calling only with the King while otherwise checking or folding.""}","Let me analyze each hand carefully to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand:
+
+**Hand 1:** You are Player 1, hold Jack. You checked. Opponent checked. Showdown: opponent had Queen. You lost 1 chip.
+- Opponent with Queen checked. This is consistent with Type A (never bets), Type B (checks Queen), Type E (bets only with King, so checks with Queen). Type C would likely bet with Queen. Type D might check or bet.
+
+**Hand 2:** You are Player 2, hold King. Opponent checked. You bet. Opponent folded.
+- Opponent checked (as Player 1), then folded to your bet. This is consistent with Type A (never bets, folds to bets unless has King), Type B (could fold to bet with non-King), Type E (bets only with King, folds otherwise). Type C would likely call. Type D might fold.
+- The opponent checked as Player 1, which means they didn't bet. This rules out Type C (very aggressive, bets with almost any card).
+
+**Hand 3:** You are Player 1, hold Jack. You checked. Opponent bet. You folded.
+- Opponent bet as Player 2 after you checked. This is interesting. Type A never bets, so this rules out Type A. Type B could bet as a bluff or value. Type C would bet aggressively. Type D could bet. Type E bets only with King.
+- The opponent bet when facing a check. This eliminates Type A (never bets).
+
+**Hand 4:** You are Player 2, hold Queen. Opponent checked. You checked. Showdown: opponent had Jack. You won.
+- Opponent with Jack checked as Player 1. Type B might bluff with Jack sometimes. Type A would check. Type C would likely bet. Type E would check (only bets with King). Type D might check or bet.
+
+**Hand 5:** You are Player 1, hold Jack. You checked. Opponent checked. Showdown: opponent had Queen. You lost.
+- Opponent with Queen checked. Similar to Hand 1. Consistent with Type A, B, E. Not Type C.
+
+**Hand 6:** You are Player 2, hold King. Opponent checked. You bet. Opponent folded.
+- Similar to Hand 2. Opponent checked as Player 1, folded to bet. Consistent with Type A, B, E. Not Type C.
+
+**Hand 7:** You are Player 1, hold Queen. You checked. Opponent checked. Showdown: opponent had Jack. You won.
+- Opponent with Jack checked. Consistent with Type A, B (sometimes), E. Not Type C.
+
+**Hand 8:** You are Player 2, hold Jack. Opponent checked. You checked. Showdown: opponent had Queen. You lost.
+- Opponent with Queen checked as Player 1. Consistent with Type A, B, E. Not Type C.
+
+Now let me summarize the opponent's behavior:
+- Hand 1: Opponent (Player 2, Queen) checked → passive
+- Hand 2: Opponent (Player 1, unknown) checked, then folded to bet → passive
+- Hand 3: Opponent (Player 2, unknown) BET after you checked → aggressive action
+- Hand 4: Opponent (Player 1, Jack) checked → passive
+- Hand 5: Opponent (Player 2, Queen) checked → passive
+- Hand 6: Opponent (Player 1, unknown) checked, then folded to bet → passive
+- Hand 7: Opponent (Player 1, Jack) checked → passive
+- Hand 8: Opponent (Player 2, Queen) checked → passive
+
+Key observations:
+1. The opponent bet only once (Hand 3) out of 8 hands. This is very selective.
+2. The opponent folded to bets twice (Hands 2, 6).
+3. The opponent checked with Queen multiple times (Hands 1, 5, 8).
+4. The opponent checked with Jack (Hands 4, 7).
+
+Now let me evaluate each type:
+
+**Type A (very passive: never bets, calls only with King, otherwise checks or folds):**
+- Hand 3 contradicts this - the opponent BET. Type A never bets. This essentially rules out Type A.
+- Probability: very low, maybe 0.00-0.02.
+
+**Type B (equilibrium: value-bets King, sometimes bluffs with Jack, checks Queen, calls with Queen sometimes):**
+- Hand 3: Opponent bet. In equilibrium, Player 2 can bet as a bluff (with Jack) or value (with King). This is consistent.
+- Hands 1, 5, 8: Opponent checked with Queen. In equilibrium, Queen checks. Consistent.
+- Hands 2, 6: Opponent folded to bet. In equilibrium, non-King cards fold to bets. Consistent.
+- Hands 4, 7: Opponent checked with Jack. In equilibrium, Jack sometimes bluffs but also sometimes checks. Consistent.
+- This fits well. The one bet in Hand 3 could be a bluff with Jack or value with King.
+- Probability: moderate to high.
+
+**Type C (very aggressive: bets and calls with almost any card):**
+- The opponent only bet once in 8 hands and folded twice. This is very inconsistent with Type C.
+- Probability: very low, maybe 0.00-0.02.
+
+**Type D (adaptive: starts close to equilibrium, bluffs with any card once learner folds often):**
+- The learner folded in Hand 3. But we don't see evidence of the opponent exploiting this by bluffing more later.
+- The behavior is similar to equilibrium (Type B) with one bet.
+- However, Type D would start like equilibrium and then adapt. With only 8 hands, we might not see much adaptation.
+- The single bet could be consistent with early equilibrium play.
+- Probability: moderate, but hard to distinguish from B with limited data.
+
+**Type E (cautious: bets and calls only with King, otherwise checks or folds):**
+- Hand 3: Opponent bet. If Type E, they would only bet with King. This is possible.
+- Hands 2, 6: Opponent folded to bet. If they had non-King, they'd fold. Consistent.
+- Hands 1, 5, 8: Opponent checked with Queen. Consistent (only bets with King).
+- Hands 4, 7: Opponent checked with Jack. Consistent.
+- This fits well too. The one bet in Hand 3 could be with King.
+- Probability: moderate to high.
+
+Now, distinguishing between B, D, and E:
+- The key differentiator is Hand 3: the opponent bet. 
+- Type E only bets with King. Type B bets with King (value) and sometimes Jack (bluff). Type D similar to B initially.
+- With only one bet observed, it's hard to distinguish. But the overall pattern of very passive play (checking most hands, folding to bets) is more consistent with Type E or Type B.
+- Type B in equilibrium would bet more often (bluffing with Jack). With 8 hands, seeing only 1 bet is a bit low for equilibrium but not impossible.
+- Type E would bet only with King, which is 1/3 of the time. In 8 hands, seeing 1 bet is reasonable.
+- Type D starts like equilibrium but adapts. With only 8 hands, it might look like B.
+
+Let me think more carefully:
+- The opponent bet once (Hand 3) and it was as Player 2 after a check.
+- The opponent folded twice to bets (Hands 2, 6).
+- The opponent checked 5 times as Player 1 (Hands 4, 7) and as Player 2 (Hands 1, 5, 8).
+
+For Type E: bets only with King. In 8 hands, the opponent would have King about 1/3 of the time ≈ 2-3 times. But we only see 1 bet. However, the opponent might not always be in a position to bet (as Player 1, they bet; as Player 2, they can bet after a check). Actually, in Kuhn poker, Player 1 can bet or check. Player 2 can bet or check after Player 1 checks. So the opponent could bet in any hand.
+
+Wait, let me re-examine. In 8 hands:
+- As Player 1: Hands 1, 3, 5, 7 (4 hands)
+- As Player 2: Hands 2, 4, 6, 8 (4 hands)
+
+As Player 1, the opponent checked in Hands 1, 5, 7 (3 times) and bet in Hand 3 (1 time).
+As Player 2, the opponent checked in Hands 2, 4, 6, 8 (4 times).
+
+Wait, Hand 2: Opponent is Player 1, checked. Hand 4: Opponent is Player 1, checked. Hand 6: Opponent is Player 1, checked. Hand 8: Opponent is Player 1, checked.
+
+Actually, let me re-read:
+- Hand 1: You are Player 1, so opponent is Player 2.
+- Hand 2: You are Player 2, so opponent is Player 1.
+- Hand 3: You are Player 1, so opponent is Player 2.
+- Hand 4: You are Player 2, so opponent is Player 1.
+- Hand 5: You are Player 1, so opponent is Player 2.
+- Hand 6: You are Player 2, so opponent is Player 1.
+- Hand 7: You are Player 1, so opponent is Player 2.
+- Hand 8: You are Player 2, so opponent is Player 1.
+
+So opponent as Player 1: Hands 2, 4, 6, 8 (4 hands)
+- Hand 2: checked, then folded to your bet
+- Hand 4: checked, showdown with Jack
+- Hand 6: checked, then folded to your bet
+- Hand 8: checked, showdown with Queen
+
+Opponent as Player 2: Hands 1, 3, 5, 7 (4 hands)
+- Hand 1: checked, showdown with Queen
+- Hand 3: BET (after your check)
+- Hand 5: checked, showdown with Queen
+- Hand 7: checked, showdown with Jack
+
+So the opponent bet exactly once (Hand 3, as Player 2). The opponent checked 7 times. The opponent folded 2 times.
+
+For Type E (bets only with King):
+- As Player 1, they checked 4 times. If they had King, they'd bet. So they didn't have King in any of those 4 hands. Probability of not having King in 4 hands: (2/3)^4 ≈ 0.197. That's low but possible.
+- As Player 2, they bet once and checked 3 times. The bet could be with King. The 3 checks could be non-King.
+- Overall, 1 bet out of 8 hands. If King appears 1/3 of the time, we'd expect ~2-3 bets. 1 is a bit low but within variance.
+
+For Type B (equilibrium):
+- In equilibrium, Player 1 bets with King (always) and bluffs with Jack (1/3 of the time). So betting probability ≈ 1/3 + 1/3 × 1/3 = 4/9 ≈ 0.44.
+- In 8 hands, expected bets ≈ 3.5. Seeing only 1 is low but possible.
+- Player 2 in equilibrium: bets with King (always) and sometimes bluffs. Also lower frequency.
+
+For Type D:
+- Starts like equilibrium, adapts. With 8 hands, might not show much adaptation yet.
+- Similar to B for early hands.
+
+Given the very passive behavior (only 1 bet, 2 folds, 5 checks), this looks most like Type E (cautious, only bets with King) or possibly Type B with low variance.
+
+But wait - Type A is ruled out because of the bet in Hand 3. Type C is ruled out because of the extreme passivity.
+
+The main candidates are B, D, and E.
+
+The fact that the opponent only bet once and it was as Player 2 (after a check) is interesting. In Type E, they'd only bet with King. In Type B, they'd bet with King and sometimes Jack.
+
+The two folds (Hands 2, 6) when facing a bet as Player 1 are consistent with all types except C.
+
+I think the evidence most strongly points to Type E:
+- Very selective betting (only 1 bet in 8 hands)
+- Folds to bets readily
+- Checks with Queen and Jack
+- The single bet could be with King
+
+But Type B is also possible. Let me assign probabilities:
+- Type A: 0.00 (ruled out by Hand 3 bet)
+- Type B: 0.20 (possible but the low bet frequency is a bit low for equilibrium)
+- Type C: 0.00 (ruled out by passivity)
+- Type D: 0.10 (possible but no evidence of adaptation)
+- Type E: 0.70 (best fit: very selective, only bets with King, folds readily)
+
+Actually, let me reconsider. With only 8 hands, the variance is high. Let me think about what's most likely.
+
+The opponent's behavior:
+- 1 bet out of 8 hands (12.5%)
+- 2 folds out of 2 opportunities to fold (100%)
+- 5 checks out of 5 opportunities to check (100%)
+
+For Type E: bet probability = P(King) = 1/3 ≈ 33%. In 8 hands, expected 2.67 bets. Getting 1 is possible (binomial: P(1|8, 1/3) = C(8,1)(1/3)(2/3)^7 ≈ 0.166).
+
+For Type B: bet probability ≈ 4/9 ≈ 44% for Player 1, and for Player 2 it's different. Overall maybe 30-40%. Getting 1 in 8 is also possible but less likely.
+
+For Type D: similar to B initially.
+
+I'll go with:
+- Type A: 0.00
+- Type B: 0.15
+- Type C: 0.00
+- Type D: 0.10
+- Type E: 0.75
+
+Actually, let me reconsider Type D. Type D ""bluffs with any card once the learner has folded to its bets often."" The learner folded in Hand 3. But we don't see the opponent bluffing more after that. In Hands 4-8, the opponent checked 4 times and didn't bet. So there's no evidence of adaptation. This makes Type D less likely.
+
+Let me also consider: in Hand 3, the opponent bet as Player 2. If Type E, they'd only bet with King. If Type B, they could bet with King or bluff with Jack. We don't know the card. But the overall pattern of extreme passivity (only 1 bet, folding readily) is most consistent with Type E.
+
+Final probabilities:
+- Type A: 0.00 (ruled out by the single bet)
+- Type B: 0.15 (possible but low bet frequency)
+- Type C: 0.00 (ruled out by passivity)
+- Type D: 0.10 (no evidence of adaptation)
+- Type E: 0.75 (best fit)
+
+These sum to 1.00. Good.
+
+Prediction: Type E.",188.46,3670,668,stop,True,True,True,True,1.0,Type E,Type E,0.15,1.8971,1.295,False,"The opponent bet only once in 8 hands (consistent with betting solely on King), folded readily to both bets faced, and checked with Queen and Jack, matching the cautious Type E profile of betting and calling only with the King while otherwise checking or folding.",,0.0,0.15,0.0,0.1,0.75
+nash_02,1,Nash,Type B,3496141554,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:42:35+00:00,,"Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is.
+
+Let me go through each hand and note the opponent's actions:
+
+Hand 1: I'm Player 1 with Jack. I checked. Opponent checked. Showdown: opponent had Queen.
+- Opponent with Queen checked when facing a check. This is consistent with Type A (never bets), Type B (checks Queen), Type E (bets only with King, otherwise checks). Not consistent with Type C (very aggressive, would likely bet) or Type D (starts close to equilibrium, might check Queen).
+
+Hand 2: I'm Player 2 with King. Opponent checked. I bet. Opponent called. Showdown: opponent had Queen.
+- Opponent with Queen called a bet. This is interesting. Type A: ""calls only with the King, otherwise checks or folds"" - so Type A would NOT call with Queen. Type B: ""calls with the Queen only some of the time"" - possible. Type C: ""bets and calls with almost any card"" - possible. Type D: starts close to equilibrium, might call with Queen sometimes. Type E: ""bets and calls only with the King, otherwise checks or folds"" - would NOT call with Queen.
+
+Wait, let me re-read Type A: ""never bets, calls only with the King, otherwise checks or folds."" So Type A would fold to a bet with Queen. But the opponent called with Queen here. This rules out Type A and Type E.
+
+Hand 3: I'm Player 1 with King. I bet. Opponent folded.
+- Opponent folded to a bet. We don't know the card. This is consistent with most types (folding to a bet is normal for non-King cards).
+
+Hand 4: I'm Player 2 with Queen. Opponent checked. I checked. Showdown: opponent had Jack.
+- Opponent with Jack checked. Consistent with Type A (never bets), Type B (might check Jack or bluff), Type E (bets only with King, otherwise checks). Not consistent with Type C (very aggressive, would likely bet with Jack).
+
+Hand 5: I'm Player 1 with King. I bet. Opponent folded.
+- Same as Hand 3. Opponent folded to a bet.
+
+Hand 6: I'm Player 2 with Jack. Opponent checked. I checked. Showdown: opponent had King.
+- Opponent with King checked. This is interesting. Type B: value-bets the King, so would typically bet with King. Type C: very aggressive, would bet with King. Type D: starts close to equilibrium, would bet with King. Type A: never bets, so would check with King. Type E: ""bets and calls only with the King"" - so Type E WOULD bet with King.
+
+Wait, Type E says ""bets and calls only with the King, otherwise checks or folds."" This means Type E bets with King. But the opponent checked with King here. This rules out Type E.
+
+Actually, let me re-read Type A: ""very passive: never bets, calls only with the King, otherwise checks or folds."" So Type A never bets, period. With King, Type A would check (since it never bets). This is consistent with Hand 6.
+
+But wait - in Hand 2, the opponent called with Queen. Type A says ""calls only with the King, otherwise checks or folds."" So Type A would fold to a bet with Queen, not call. This rules out Type A.
+
+Hmm, but let me reconsider. In Hand 2, I'm Player 2. Opponent (Player 1) checked. I bet. Opponent called. The opponent had Queen. So the opponent called a bet with Queen. Type A would not do this. Type E would not do this.
+
+So we've ruled out Type A (wouldn't call with Queen) and Type E (wouldn't call with Queen, and would bet with King but didn't in Hand 6).
+
+Wait, actually for Type E: ""bets and calls only with the King, otherwise checks or folds."" This means with Queen, Type E checks or folds. So Type E would fold to a bet with Queen. This rules out Type E.
+
+For Type A: ""never bets, calls only with the King, otherwise checks or folds."" With Queen, Type A checks or folds. So Type A would fold to a bet with Queen. This rules out Type A.
+
+Now let's look at what's left: Type B, Type C, Type D.
+
+Hand 6: Opponent had King and checked. 
+- Type B: value-bets the King. So Type B would typically bet with King. Checking with King is unusual for Type B.
+- Type C: very aggressive, would bet with King. Checking with King is unusual for Type C.
+- Type D: starts close to equilibrium, would bet with King. Checking with King is unusual for Type D.
+
+Hmm, this is problematic. All remaining types (B, C, D) would typically bet with King, but the opponent checked with King in Hand 6.
+
+Wait, let me reconsider. In Kuhn Poker, when you're Player 1, you can check or bet. When you're Player 2, you can check or bet. In Hand 6, I'm Player 2, opponent is Player 1. Opponent checked. So the opponent (Player 1) with King chose to check instead of bet.
+
+For Type B (equilibrium): In equilibrium, Player 1 with King always bets (value bet). So checking with King is very unlikely for Type B.
+For Type C (very aggressive): Would definitely bet with King. Very unlikely to check.
+For Type D (adaptive, starts close to equilibrium): Would likely bet with King. Unlikely to check.
+
+But wait - maybe there's some randomness. Let me reconsider Type B. In equilibrium, Player 1 with King bets with probability 1. So checking with King is essentially impossible for Type B.
+
+Hmm, but actually, let me reconsider. Maybe I'm being too strict. Let me look at the overall pattern:
+
+- Hand 1: Opponent (P1, Queen) checked - consistent with B, D (check Queen)
+- Hand 2: Opponent (P1, Queen) called a bet - consistent with B (calls Queen sometimes), C (calls almost anything), D (might call)
+- Hand 3: Opponent (P2) folded to bet - consistent with all types
+- Hand 4: Opponent (P1, Jack) checked - consistent with B (might check Jack), D (might check Jack), but not C (very aggressive)
+- Hand 5: Opponent (P2) folded to bet - consistent with all types
+- Hand 6: Opponent (P1, King) checked - inconsistent with B, C, D (all would bet King)
+- Hand 7: Opponent (P2) folded to bet - consistent with all types
+- Hand 8: Opponent (P2) folded to bet - consistent with all types
+
+The key observations:
+1. Opponent never bet (Hands 1, 4, 6 show opponent as Player 1 and always checked)
+2. Opponent called with Queen (Hand 2)
+3. Opponent folded to bets multiple times (Hands 3, 5, 7, 8)
+4. Opponent checked with King (Hand 6)
+
+The fact that the opponent NEVER bet in 3 opportunities as Player 1 (Hands 1, 4, 6) is very telling. This strongly suggests a passive type. But the call with Queen in Hand 2 rules out Type A and Type E.
+
+Wait, let me reconsider Type D: ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The key here is ""starts close to equilibrium."" In equilibrium, Player 1 with King bets, with Queen checks, with Jack sometimes bluffs. But the opponent never bet in 3 hands as Player 1. That's very passive.
+
+Actually, wait. Let me re-examine. The opponent is Player 1 in Hands 1, 3, 4, 5, 6, 7. No wait:
+- Hand 1: I'm Player 1, opponent is Player 2
+- Hand 2: I'm Player 2, opponent is Player 1
+- Hand 3: I'm Player 1, opponent is Player 2
+- Hand 4: I'm Player 2, opponent is Player 1
+- Hand 5: I'm Player 1, opponent is Player 2
+- Hand 6: I'm Player 2, opponent is Player 1
+- Hand 7: I'm Player 1, opponent is Player 2
+- Hand 8: I'm Player 2, opponent is Player 1
+
+So opponent is Player 1 in Hands 2, 4, 6, 8.
+- Hand 2: Opponent (P1, Queen) checked, then called my bet.
+- Hand 4: Opponent (P1, Jack) checked.
+- Hand 6: Opponent (P1, King) checked.
+- Hand 8: Opponent (P1, King) checked, then folded to my bet.
+
+Wait, Hand 8: I'm Player 2 with King. Opponent checked. I bet. Opponent folded. So opponent (P1) checked and then folded to my bet. We don't know opponent's card.
+
+And opponent is Player 2 in Hands 1, 3, 5, 7.
+- Hand 1: Opponent (P2, Queen) checked.
+- Hand 3: Opponent (P2) folded to my bet.
+- Hand 5: Opponent (P2) folded to my bet.
+- Hand 7: Opponent (P2) folded to my bet.
+
+So as Player 1, the opponent checked in all 4 hands (Hands 2, 4, 6, 8). Never bet as Player 1.
+As Player 2, the opponent checked once (Hand 1) and folded 3 times (Hands 3, 5, 7). Called once (Hand 2).
+
+The opponent NEVER bet in any hand. This is extremely passive.
+
+But the opponent called with Queen in Hand 2, which rules out Type A and Type E.
+
+Let me reconsider. Could this be Type D? Type D ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" But the opponent never bet at all, so the ""bluffs with any card"" part never triggered. And ""starts close to equilibrium"" would mean betting with King, which didn't happen.
+
+Could this be Type B? Type B ""value-bets the King, sometimes bluffs with the Jack, checks the Queen, and calls with the Queen only some of the time."" But the opponent checked with King in Hand 6, which contradicts ""value-bets the King.""
+
+Hmm, this is tricky. Let me think about what's most likely given the evidence.
+
+The strongest evidence:
+1. Never bet as Player 1 (4 opportunities) - very passive
+2. Called with Queen (Hand 2) - rules out A and E
+3. Checked with King (Hand 6) - rules out B, C, D (all would bet King)
+4. Folded to bets frequently (3 times as P2) - passive
+
+The checking with King is the most puzzling. None of the types perfectly explain this. But let me think about which type is LEAST inconsistent:
+
+- Type A: Never bets (consistent with never betting), but ""calls only with King"" contradicts calling with Queen. Probability of calling with Queen under Type A: 0.
+- Type B: Value-bets King (contradicts checking King), checks Queen (consistent), calls Queen sometimes (consistent with Hand 2). Probability of checking King under Type B: very low (maybe 0 in strict equilibrium).
+- Type C: Very aggressive, bets and calls with almost any card. Contradicts never betting and folding 3 times. Very unlikely.
+- Type D: Starts close to equilibrium (would bet King), but adapts. Since learner never folded to opponent's bets (opponent never bet), the adaptation wouldn't trigger. But still, starting close to equilibrium means betting King.
+- Type E: Bets and calls only with King. Contradicts calling with Queen AND checking with King.
+
+Actually, wait. Let me re-read Type E: ""cautious: bets and calls only with the King, otherwise checks or folds."" This means:
+- With King: bets (as P1) or calls (as P2 facing a bet)
+- With non-King: checks (as P1) or folds (as P2 facing a bet)
+
+So Type E with King as P1 would BET. But in Hand 6, opponent (P1, King) checked. This rules out Type E.
+And Type E with Queen as P1 would check (consistent with Hand 2's initial check), but would FOLD to a bet (contradicts Hand 2's call).
+
+So Type E is ruled out by both Hand 2 (called with Queen) and Hand 6 (checked with King).
+
+Let me reconsider Type A more carefully: ""very passive: never bets, calls only with the King, otherwise checks or folds.""
+- Never bets: consistent with all 4 P1 hands where opponent checked.
+- Calls only with King: In Hand 2, opponent called with Queen. This contradicts Type A.
+- Otherwise checks or folds: In Hand 1, opponent (P2, Queen) checked - consistent. In Hands 3, 5, 7, opponent (P2) folded - consistent.
+
+The only contradiction for Type A is the call with Queen in Hand 2.
+
+For Type B: ""value-bets the King, sometimes bluffs with the Jack, checks the Queen, and calls with the Queen only some of the time.""
+- Value-bets King: Hand 6 contradicts (checked King).
+- Checks Queen: Hand 2 initial check is consistent.
+- Calls Queen sometimes: Hand 2 call is consistent.
+- Sometimes bluffs with Jack: Hand 4 (P1, Jack) checked - could be the ""not bluffing"" instance.
+
+The main contradiction for Type B is checking with King in Hand 6.
+
+Hmm, but in 8 hands, we only see one King for the opponent (Hand 6). If Type B value-bets King with probability close to 1, then checking King is very unlikely. But maybe there's some small probability.
+
+Actually, in Kuhn Poker equilibrium, Player 1 with King ALWAYS bets (probability 1). So Type B checking King has probability 0. This strongly rules out Type B.
+
+But then what explains the data? Let me think about this differently.
+
+The data shows:
+- Opponent never bet (4 P1 opportunities)
+- Opponent called once with Queen
+- Opponent folded 3 times as P2
+- Opponent checked once as P2
+
+This pattern is MOST consistent with a very passive player who occasionally calls. The closest type would be Type A, except for the one call with Queen.
+
+Could there be a small probability that Type A makes a mistake? Or could this be Type D that hasn't adapted yet?
+
+Actually, let me reconsider Type D: ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+
+If Type D starts close to equilibrium, it would:
+- Bet with King (but didn't in Hand 6)
+- Check with Queen (consistent with Hand 2)
+- Sometimes bluff with Jack (didn't in Hand 4)
+- Call with Queen sometimes (consistent with Hand 2)
+
+The fact that Type D didn't bet with King is a problem. But maybe ""starts close to equilibrium"" doesn't mean exactly equilibrium. Maybe it's a softer version.
+
+Actually, I think the most likely explanation is Type A with a small error, or Type D that is very passive initially. But given the constraints, let me assign probabilities.
+
+The key evidence:
+1. Never bet as P1 (4 times) → strongly suggests passive (A, E) or very cautious
+2. Called with Queen → rules out A, E
+3. Checked with King → rules out B, C, D (all would bet King)
+4. Folded frequently as P2 → passive
+
+This is a contradictory dataset. No type perfectly fits. Let me think about which type is LEAST inconsistent:
+
+- Type A: 1 contradiction (called with Queen instead of folding). Everything else fits perfectly.
+- Type B: 1 major contradiction (checked King instead of betting). Other things fit.
+- Type C: Many contradictions (never bet, folded 3 times). Very unlikely.
+- Type D: Similar to B, would bet King. Also, the ""adaptive"" part never triggered.
+- Type E: 2 contradictions (called with Queen, checked King).
+
+I think Type A is the closest fit despite the one call with Queen. Maybe the ""calls only with the King"" is a general description and there's a small probability of calling with other cards. Or maybe it's Type D that is very passive.
+
+Actually, let me reconsider. Type D says ""starts close to equilibrium."" In equilibrium, Player 1 with King bets with probability 1. But ""close to"" might mean not exactly 1. And the adaptation part says ""bluffs with any card once the learner has folded to its bets often"" - since the opponent never bet, this condition was never met, so the opponent stayed in its initial (equilibrium-like) strategy. But even so, equilibrium says bet King.
+
+I'll go with Type A as the most likely, with a small probability for Type D. The call with Queen in Hand 2 is the main issue for Type A, but it's just one instance and could be a small deviation.
+
+Let me assign probabilities:
+- Type A: 0.45 (best fit overall, one minor contradiction)
+- Type B: 0.10 (checking King is a big problem, but calling Queen fits)
+- Type C: 0.02 (very unlikely, too passive)
+- Type D: 0.35 (could explain the passivity if ""close to equilibrium"" is interpreted loosely, and the adaptation never triggered)
+- Type E: 0.08 (two contradictions)
+
+Hmm, actually let me reconsider. The fact that the opponent checked with King is really the key issue. In Kuhn Poker, checking with King as Player 1 is essentially never done by any of the described types except Type A (which never bets). 
+
+But Type A says ""calls only with the King."" The opponent called with Queen. This is a clear violation.
+
+However, if I had",197.02,4096,669,length,False,False,False,False,,,,,,,,,,,,,,
+nash_03,1,Nash,Type B,2499804056,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:45:52+00:00,"{""probs"": {""Type A"": 0.05, ""Type B"": 0.10, ""Type C"": 0.03, ""Type D"": 0.07, ""Type E"": 0.75}, ""prediction"": ""Type E"", ""evidence"": ""The opponent's predominantly passive behavior (3 folds, 3 checks, 1 call, 1 bet) aligns with a cautious King-only strategy, though the check with King in Hand 4 and call with Queen in Hand 7 are minor deviations from strict Type E play, while the single bet in Hand 8 rules out Type A which never bets.""}","Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand and note the opponent's actions:
+
+Hand 1: I'm Player 1 with King. I bet. Opponent folded. (Opponent's card unknown - could be Jack or Queen)
+Hand 2: I'm Player 2 with King. Opponent checked. I bet. Opponent folded. (Opponent's card unknown - could be Jack or Queen)
+Hand 3: I'm Player 1 with Jack. I checked. Opponent checked. Showdown: opponent had Queen. (Opponent checked with Queen)
+Hand 4: I'm Player 2 with Queen. Opponent checked. I checked. Showdown: opponent had King. (Opponent checked with King)
+Hand 5: I'm Player 1 with Queen. I checked. Opponent checked. Showdown: opponent had Jack. (Opponent checked with Jack)
+Hand 6: I'm Player 2 with King. Opponent checked. I bet. Opponent folded. (Opponent's card unknown - could be Jack or Queen)
+Hand 7: I'm Player 1 with King. I bet. Opponent called. Showdown: opponent had Queen. (Opponent called with Queen)
+Hand 8: I'm Player 2 with Jack. Opponent bet. I folded. (Opponent's card unknown - could be Queen or King)
+
+Now let me analyze the opponent's behavior:
+
+Key observations about the opponent:
+1. Hand 1: Opponent folded to a bet (with unknown card, likely Jack or Queen since King was mine)
+2. Hand 2: Opponent checked, then folded to my bet (unknown card, likely Jack or Queen)
+3. Hand 3: Opponent checked with Queen
+4. Hand 4: Opponent checked with King (this is notable - checking with King is unusual for most types)
+5. Hand 5: Opponent checked with Jack
+6. Hand 6: Opponent checked, then folded to my bet (unknown card, likely Jack or Queen)
+7. Hand 7: Opponent called with Queen (facing my bet with King)
+8. Hand 8: Opponent bet (with unknown card, likely Queen or King since I had Jack)
+
+Let me evaluate each type:
+
+**Type A (very passive: never bets, calls only with King, otherwise checks or folds):**
+- Hand 1: Fold to bet - consistent (folds with non-King)
+- Hand 2: Check then fold to bet - consistent
+- Hand 3: Check with Queen - consistent
+- Hand 4: Check with King - consistent (Type A checks, doesn't bet)
+- Hand 5: Check with Jack - consistent
+- Hand 6: Check then fold to bet - consistent
+- Hand 7: Call with Queen - INCONSISTENT. Type A only calls with King, not Queen.
+- Hand 8: Bet - INCONSISTENT. Type A never bets.
+
+Type A is ruled out by Hand 7 (calling with Queen) and Hand 8 (betting).
+
+**Type B (equilibrium: value-bets King, sometimes bluffs with Jack, checks Queen, calls with Queen sometimes):**
+- Hand 1: Fold to bet - could be consistent (if opponent had Jack or Queen, folding is possible)
+- Hand 2: Check then fold to bet - consistent (if opponent had Jack or Queen)
+- Hand 3: Check with Queen - consistent (equilibrium checks Queen)
+- Hand 4: Check with King - INCONSISTENT. Equilibrium value-bets King.
+- Hand 5: Check with Jack - could be consistent (equilibrium sometimes checks Jack, sometimes bluffs)
+- Hand 6: Check then fold to bet - consistent
+- Hand 7: Call with Queen - consistent (equilibrium calls with Queen sometimes)
+- Hand 8: Bet - could be consistent (if opponent had King, value bet; or Jack, bluff)
+
+The main issue with Type B is Hand 4: checking with King. In equilibrium, King should always be value-bet. This is a strong inconsistency.
+
+**Type C (very aggressive: bets and calls with almost any card):**
+- Hand 1: Fold to bet - INCONSISTENT. Type C would call with almost any card.
+- Hand 2: Check then fold to bet - INCONSISTENT. Type C would bet or call.
+- Hand 3: Check with Queen - INCONSISTENT. Type C would bet.
+- Hand 4: Check with King - INCONSISTENT. Type C would bet.
+- Hand 5: Check with Jack - INCONSISTENT. Type C would bet.
+- Hand 6: Check then fold to bet - INCONSISTENT.
+- Hand 7: Call with Queen - consistent
+- Hand 8: Bet - consistent
+
+Type C is heavily ruled out by the many checks and folds.
+
+**Type D (adaptive: starts close to equilibrium, but bluffs with any card once learner folds often):**
+- Hand 1: Fold to bet - consistent with early equilibrium play
+- Hand 2: Check then fold to bet - consistent
+- Hand 3: Check with Queen - consistent
+- Hand 4: Check with King - INCONSISTENT (equilibrium would bet King)
+- Hand 5: Check with Jack - could be consistent
+- Hand 6: Check then fold to bet - consistent
+- Hand 7: Call with Queen - consistent
+- Hand 8: Bet - could be a bluff (adaptive behavior)
+
+The issue is Hand 4 (checking King) and the overall passivity. Type D starts close to equilibrium but the checking of King is hard to explain. However, ""starts close to equilibrium"" might mean it's not perfectly equilibrium. But the overall pattern is very passive.
+
+**Type E (cautious: bets and calls only with King, otherwise checks or folds):**
+- Hand 1: Fold to bet - consistent (folds with non-King)
+- Hand 2: Check then fold to bet - consistent
+- Hand 3: Check with Queen - consistent
+- Hand 4: Check with King - INCONSISTENT. Type E bets with King.
+- Hand 5: Check with Jack - consistent
+- Hand 6: Check then fold to bet - consistent
+- Hand 7: Call with Queen - INCONSISTENT. Type E only calls with King.
+- Hand 8: Bet - could be consistent if opponent had King (value bet with King)
+
+Wait, let me reconsider Hand 4. The opponent had King and checked. For Type E, they should bet with King. This is inconsistent.
+
+And Hand 7: Opponent called with Queen. For Type E, they only call with King. This is inconsistent.
+
+Hmm, but let me reconsider. Let me look at the overall pattern more carefully.
+
+The opponent's observed actions:
+- Folds to bets: Hands 1, 2, 6 (3 times)
+- Checks: Hands 3, 4, 5 (3 times, with Queen, King, Jack respectively)
+- Calls: Hand 7 (with Queen)
+- Bets: Hand 8 (with unknown card)
+
+The opponent is mostly passive (folding and checking) but did call once with Queen and bet once.
+
+Let me reconsider Type E more carefully. Type E: ""bets and calls only with the King, otherwise checks or folds.""
+- Hand 4: Checked with King - this violates Type E (should bet with King)
+- Hand 7: Called with Queen - this violates Type E (should only call with King)
+
+But wait - maybe I'm being too strict. Let me think about what's most likely.
+
+Actually, let me reconsider. The opponent's behavior is:
+- Very passive overall (folds a lot, checks a lot)
+- Checked with King (Hand 4) - unusual for most types
+- Called with Queen (Hand 7) - unusual for very passive types
+- Bet once (Hand 8) - could be with King
+
+The pattern is mostly passive/cautious but with some deviations. Let me think about which type best fits:
+
+Type E fits most of the hands (1, 2, 3, 5, 6, 8) but fails on Hands 4 and 7.
+Type A fails on Hands 7 and 8.
+Type B fails on Hand 4 (checking King).
+Type C fails on many hands.
+Type D is similar to B but with adaptation.
+
+Actually, let me reconsider Type E. ""Bets and calls only with the King, otherwise checks or folds."" 
+
+Hand 4: Opponent had King and checked. This is a clear violation of Type E.
+Hand 7: Opponent called with Queen. This is a clear violation of Type E.
+
+But the overall pattern is very cautious. The opponent folded 3 times, checked 3 times, called once, and bet once. This is very passive.
+
+Let me think about probabilities:
+- Type A: Ruled out by Hand 8 (betting) and Hand 7 (calling with Queen). Very low probability.
+- Type B: Ruled out by Hand 4 (checking King). But otherwise fits. Moderate-low probability.
+- Type C: Ruled out by many folds and checks. Very low probability.
+- Type D: Similar issues to B. Low probability.
+- Type E: Fits most hands but fails on 4 and 7. Highest probability among the options.
+
+Wait, let me reconsider. Maybe the opponent is Type E but made a couple of mistakes? Or maybe it's a mix.
+
+Actually, looking more carefully:
+- The opponent checked with King in Hand 4. This is the biggest anomaly.
+- The opponent called with Queen in Hand 7. This is also anomalous for very passive types.
+- The opponent bet in Hand 8. This could be with King (consistent with E) or a bluff.
+
+Given the overall passivity (3 folds, 3 checks, 1 call, 1 bet), Type E seems most likely despite the two anomalies. The opponent is clearly not aggressive (rules out C), not equilibrium (rules out B due to checking King), and not adaptive (rules out D).
+
+But Type A is also very passive. The difference between A and E:
+- Type A: never bets, calls only with King
+- Type E: bets and calls only with King, otherwise checks or folds
+
+The key difference is that Type E CAN bet with King, while Type A never bets. In Hand 8, the opponent bet. If the opponent had King, this is consistent with E but not A. In Hand 4, the opponent checked with King, which is inconsistent with E (should bet) but consistent with A (never bets).
+
+So we have:
+- Hand 4 (check with King): supports A, contradicts E
+- Hand 8 (bet): supports E, contradicts A
+- Hand 7 (call with Queen): contradicts both A and E
+
+Hmm, this is tricky. Let me assign probabilities:
+
+Type A: Fails on Hand 7 (call with Queen) and Hand 8 (bet). But fits Hands 1, 2, 3, 4, 5, 6. Probability: low, maybe 0.05-0.10.
+
+Type B: Fails on Hand 4 (check with King). Fits others reasonably. Probability: maybe 0.10-0.15.
+
+Type C: Fails on many hands. Probability: very low, maybe 0.02-0.05.
+
+Type D: Similar to B but with adaptation. The single bet in Hand 8 could be adaptive. But checking King in Hand 4 is hard to explain. Probability: maybe 0.05-0.10.
+
+Type E: Fails on Hand 4 (check with King) and Hand 7 (call with Queen). But fits the overall passive pattern and the bet in Hand 8. Probability: maybe 0.50-0.60.
+
+Let me settle on:
+- Type A: 0.08
+- Type B: 0.12
+- Type C: 0.03
+- Type D: 0.07
+- Type E: 0.70
+
+Actually, let me reconsider. The opponent's behavior is:
+- 3 folds to bets (very passive)
+- 3 checks (including with King, Queen, Jack)
+- 1 call (with Queen)
+- 1 bet (unknown card)
+
+The checking with King is the most distinctive feature. In equilibrium (Type B), King is always value-bet. In Type E, King is always bet. In Type A, King is checked (never bets). In Type D, King should be bet (starts at equilibrium).
+
+So checking with King strongly suggests Type A. But then Hand 7 (calling with Queen) and Hand 8 (betting) contradict Type A.
+
+Hmm, maybe the opponent is a mix or an imperfect Type E. Let me think about this differently.
+
+If I had to pick one type, the overall passivity (folding 3 times, checking 3 times) strongly suggests a passive type. The single bet and single call are the anomalies. 
+
+Type E says ""bets and calls only with King."" The bet in Hand 8 could be with King. The call in Hand 7 was with Queen - this is a deviation. The check in Hand 4 with King is a deviation.
+
+Type A says ""never bets, calls only with King."" The bet in Hand 8 rules this out. The call in Hand 7 with Queen rules this out.
+
+I think Type E is the best fit despite the two anomalies, because:
+1. The overall pattern is very passive
+2. The single bet could be with King (consistent with E)
+3. The check with King and call with Queen could be occasional mistakes/deviations
+4. Type A is ruled out by the bet in Hand 8
+
+Let me finalize:
+- Type A: 0.05 (ruled out by bet in Hand 8)
+- Type B: 0.10 (ruled out by check with King in Hand 4, but otherwise fits)
+- Type C: 0.03 (ruled out by passivity)
+- Type D: 0.07 (similar issues to B)
+- Type E: 0.75 (best overall fit despite two anomalies)
+
+These sum to 1.00. Let me adjust slightly:
+- Type A: 0.05
+- Type B: 0.10
+- Type C: 0.03
+- Type D: 0.07
+- Type E: 0.75
+
+Sum: 0.05 + 0.10 + 0.03 + 0.07 + 0.75 = 1.00 ✓
+
+Prediction: Type E",163.92,3413,669,stop,True,True,True,True,1.0,Type E,Type E,0.1,2.3026,1.3808,False,"The opponent's predominantly passive behavior (3 folds, 3 checks, 1 call, 1 bet) aligns with a cautious King-only strategy, though the check with King in Hand 4 and call with Queen in Hand 7 are minor deviations from strict Type E play, while the single bet in Hand 8 rules out Type A which never bets.",,0.05,0.1,0.03,0.07,0.75
+rock_01,1,Rock,Type A,1191945033,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:48:36+00:00,"{""probs"": {""Type A"": 0.90, ""Type B"": 0.04, ""Type C"": 0.01, ""Type D"": 0.03, ""Type E"": 0.02}, ""prediction"": ""Type A"", ""evidence"": ""The opponent never initiated a bet across all 8 hands and checked with the King three times (Hands 4, 6, 7), which is perfectly consistent with Type A's 'never bets' policy but rules out Types B, C, D, and E that would value-bet or aggressively bet the King.""}","Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is.
+
+Let me go through each hand carefully:
+
+**Hand 1:** You are Player 1, hold King. You bet. Opponent folded.
+- Opponent folded to a bet. This is consistent with most types (A, B, C, D, E) since folding to a bet is possible for all types depending on their card.
+
+**Hand 2:** You are Player 2, hold Jack. Opponent checked. You bet. Opponent folded.
+- Opponent (Player 1) checked with some card. Then when you bet, opponent folded.
+- Opponent checked as Player 1 - this is consistent with types A, B, E (they check with non-King cards), and possibly C (though C is aggressive and would bet).
+- Opponent folded to your bet - consistent with A, B, E (folding with weak cards), and possibly D.
+- Type C would likely call or bet, not fold.
+
+**Hand 3:** You are Player 1, hold King. You bet. Opponent folded.
+- Same as Hand 1. Opponent folded to a bet.
+
+**Hand 4:** You are Player 2, hold Queen. Opponent checked. You checked. Showdown: opponent had King.
+- Opponent (Player 1) checked with King. This is interesting.
+- Type A: never bets, so checking with King is consistent.
+- Type B: value-bets the King, so checking with King is NOT typical (though possible with some probability).
+- Type C: very aggressive, would bet with King. NOT consistent.
+- Type D: starts close to equilibrium, would value-bet King. NOT typical.
+- Type E: bets only with King. So checking with King is NOT consistent.
+- This strongly suggests Type A (never bets, even with King).
+
+**Hand 5:** You are Player 1, hold King. You bet. Opponent folded.
+- Opponent folded to a bet. Consistent with most types.
+
+**Hand 6:** You are Player 2, hold Queen. Opponent checked. You checked. Showdown: opponent had King.
+- Again, opponent (Player 1) checked with King. Same analysis as Hand 4.
+- This further confirms Type A behavior (never bets, even with King).
+
+**Hand 7:** You are Player 1, hold Queen. You checked. Opponent checked. Showdown: opponent had King.
+- Opponent (Player 2) checked with King. Again, checking with King.
+- Type A: never bets, so checking with King is consistent.
+- Type E: bets only with King, so checking with King is NOT consistent.
+- Type B: value-bets King, so checking is not typical.
+- Type C: very aggressive, would bet. NOT consistent.
+- This again points to Type A.
+
+**Hand 8:** You are Player 2, hold Jack. Opponent checked. You checked. Showdown: opponent had Queen.
+- Opponent (Player 1) checked with Queen. Consistent with A, B, E (check with Queen).
+- You checked with Jack, opponent checked with Queen. Showdown.
+- Type A: never bets, checks everything. Consistent.
+- Type B: checks Queen. Consistent.
+- Type E: checks Queen (only bets with King). Consistent.
+
+Now let me summarize the key observations:
+
+1. **Opponent NEVER bets** - In all 8 hands, the opponent never initiated a bet. This is the most critical observation.
+   - Hand 1: Opponent is Player 2, folds to bet (no opportunity to bet as P1)
+   - Hand 2: Opponent is Player 1, checks (doesn't bet)
+   - Hand 3: Opponent is Player 2, folds to bet
+   - Hand 4: Opponent is Player 1, checks with King (doesn't bet!)
+   - Hand 5: Opponent is Player 2, folds to bet
+   - Hand 6: Opponent is Player 1, checks with King (doesn't bet!)
+   - Hand 7: Opponent is Player 2, checks with King (doesn't bet!)
+   - Hand 8: Opponent is Player 1, checks with Queen
+
+2. **Opponent folds to bets frequently** - Hands 1, 2, 3, 5: opponent folds to bets.
+   - Type A: ""never bets, calls only with the King, otherwise checks or folds"" - folding is consistent.
+   - Type E: ""bets and calls only with the King, otherwise checks or folds"" - folding is consistent.
+
+3. **Opponent checks with King multiple times** - Hands 4, 6, 7: opponent has King but checks.
+   - Type A: ""never bets"" - checking with King is perfectly consistent.
+   - Type E: ""bets and calls only with the King"" - this means E WOULD bet with King. Checking with King contradicts E.
+   - Type B: ""value-bets the King"" - checking with King is not typical (though possible with some probability).
+   - Type C: ""bets and calls with almost any card"" - checking with King contradicts C.
+   - Type D: ""starts close to equilibrium"" - would value-bet King.
+
+The key distinguishing factor between Type A and Type E:
+- Type A: ""never bets, calls only with the King, otherwise checks or folds""
+- Type E: ""bets and calls only with the King, otherwise checks or folds""
+
+The opponent NEVER bets, even with the King (Hands 4, 6, 7 show King checking). This rules out Type E (which bets with King) and Type B (which value-bets King).
+
+The opponent also folds to bets (Hands 1, 2, 3, 5). Type A says ""calls only with the King, otherwise checks or folds."" So folding with non-King is consistent. But we don't know what card the opponent had in those hands.
+
+Wait, let me reconsider. In Hand 2, opponent is Player 1 and checks. Then you (Player 2) bet, and opponent folds. The opponent's card is unknown. If opponent had King, Type A would call (since A ""calls only with the King""). But we don't know the card.
+
+Actually, the critical evidence is:
+- Opponent checks with King in Hands 4, 6, 7 (three times!). Type A never bets, so this is perfectly consistent. Type E would bet with King, so this strongly rules out E.
+- Opponent never initiates a bet in any hand. This rules out C (very aggressive) and makes B and D unlikely.
+- Opponent folds to bets. This is consistent with A.
+
+The probability distribution:
+- Type A: Very high probability. Never bets, checks with King, folds to bets. All observations are perfectly consistent.
+- Type B: Low probability. Would value-bet King, but we see King checking 3 times.
+- Type C: Very low/near zero. Would bet aggressively, but never bets.
+- Type D: Low probability. Starts near equilibrium, would bet with King.
+- Type E: Low probability. Would bet with King, but we see King checking 3 times.
+
+Let me assign probabilities:
+- Type A: 0.85 (perfectly consistent with all observations)
+- Type B: 0.05 (could check King with some probability, but 3 times is unlikely)
+- Type C: 0.01 (essentially ruled out)
+- Type D: 0.03 (could start near equilibrium but 3 King checks is unlikely)
+- Type E: 0.06 (would bet with King, but maybe sometimes doesn't? No, E says ""bets and calls only with the King"" which implies always bets with King)
+
+Actually, let me reconsider Type E. ""Bets and calls only with the King"" - this means E bets with King and calls with King, but checks/folds with other cards. So E would ALWAYS bet with King. Seeing King check 3 times essentially rules out E.
+
+Let me adjust:
+- Type A: 0.88
+- Type B: 0.04
+- Type C: 0.01
+- Type D: 0.03
+- Type E: 0.04
+
+These sum to 1.00. Let me make them cleaner:
+- Type A: 0.85
+- Type B: 0.05
+- Type C: 0.01
+- Type D: 0.04
+- Type E: 0.05
+
+Sum = 1.00. Good.
+
+Actually, I want to be more decisive. The evidence is very strong for Type A:
+- 3 times the opponent had King and checked (never bet)
+- Never initiated a bet in 8 hands
+- Folded to bets multiple times
+
+This is almost certainly Type A. Let me give it 0.90.
+
+- Type A: 0.90
+- Type B: 0.04
+- Type C: 0.01
+- Type D: 0.03
+- Type E: 0.02
+
+Sum = 1.00. Good.",106.33,2198,663,stop,True,True,True,True,1.0,Type A,Type A,0.9,0.1054,0.013,True,"The opponent never initiated a bet across all 8 hands and checked with the King three times (Hands 4, 6, 7), which is perfectly consistent with Type A's 'never bets' policy but rules out Types B, C, D, and E that would value-bet or aggressively bet the King.",,0.9,0.04,0.01,0.03,0.02
+rock_02,1,Rock,Type A,2631188114,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:50:22+00:00,"{""probs"": {""Type A"": 0.92, ""Type B"": 0.03, ""Type C"": 0.01, ""Type D"": 0.02, ""Type E"": 0.02}, ""prediction"": ""Type A"", ""evidence"": ""The opponent never bet in any of the 8 hands (including twice holding the King), always checked or folded, and folded to every bet, which is the defining signature of the very passive Type A bot that never initiates aggression.""}","Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is.
+
+Let me go through each hand from the opponent's perspective:
+
+Hand 1: Opponent is Player 2, has Queen. Learner (Player 1) checks. Opponent checks. Showdown: opponent has Queen, learner has Jack. Opponent lost.
+- Opponent with Queen checked back. This is consistent with Type A (never bets), Type B (checks Queen), Type E (bets only with King, otherwise checks). Not consistent with Type C (very aggressive, would bet with Queen).
+
+Hand 2: Opponent is Player 1, has unknown card. Learner (Player 2) has King. Opponent checked. Learner bet. Opponent folded.
+- Opponent checked as Player 1, then folded to a bet. This is consistent with Type A (never bets, folds to bets), Type E (bets only with King, otherwise checks or folds). Could be Type B (checks Queen, folds to bet sometimes). Not consistent with Type C (very aggressive, would call or bet). Not consistent with Type D (adaptive, starts close to equilibrium).
+
+Hand 3: Opponent is Player 2, has Jack. Learner (Player 1) has Queen. Learner checks. Opponent checks. Showdown: opponent has Jack, learner has Queen. Opponent lost.
+- Opponent with Jack checked back. Consistent with Type A (never bets), Type B (could check Jack, but might bluff), Type E (bets only with King, otherwise checks). Not consistent with Type C (very aggressive).
+
+Hand 4: Opponent is Player 1, has unknown card. Learner (Player 2) has King. Opponent checked. Learner bet. Opponent folded.
+- Same as Hand 2. Opponent checked as Player 1, then folded to a bet. Consistent with Type A, Type E, possibly Type B.
+
+Hand 5: Opponent is Player 2, has Queen. Learner (Player 1) has Jack. Learner checks. Opponent checks. Showdown: opponent has Queen, learner has Jack. Opponent won.
+- Opponent with Queen checked back. Consistent with Type A, Type B, Type E. Not Type C.
+
+Hand 6: Opponent is Player 1, has King. Learner (Player 2) has Queen. Opponent checked. Learner checked. Showdown: opponent has King, learner has Queen. Opponent won.
+- Opponent with King checked as Player 1. This is interesting. Type A would never bet (consistent). Type B would value-bet the King (inconsistent - Type B should bet with King). Type C would bet with King (inconsistent). Type D starts close to equilibrium, so might bet with King (inconsistent). Type E bets only with King - wait, Type E ""bets and calls only with the King, otherwise checks or folds."" So Type E WOULD bet with King. But the opponent checked with King here. This is inconsistent with Type E.
+
+Wait, let me re-read Type E: ""cautious: bets and calls only with the King, otherwise checks or folds."" So Type E bets with King. But in Hand 6, the opponent had King and checked. This is inconsistent with Type E.
+
+Actually, wait. Let me re-read. Type E says ""bets and calls only with the King."" This means when they have King, they bet. When they don't have King, they check or fold. But in Hand 6, the opponent had King and checked. This contradicts Type E.
+
+Hmm, but actually, in Kuhn Poker, as Player 1, you can check or bet. If you check, the game goes to Player 2 who can check or bet. So checking with King as Player 1 is a valid action but not what Type E would do.
+
+Hand 7: Opponent is Player 2, has King. Learner (Player 1) has Queen. Learner checks. Opponent checks. Showdown: opponent has King, learner has Queen. Opponent won.
+- Opponent with King checked back as Player 2. Type A would check (never bets). Type B might check or bet with King (value bet). Type C would bet with King. Type E would bet with King. Type D might bet with King.
+- This is most consistent with Type A (never bets).
+
+Hand 8: Opponent is Player 1, has unknown card. Learner (Player 2) has King. Opponent checked. Learner bet. Opponent folded.
+- Same pattern as Hands 2 and 4. Opponent checked as Player 1, then folded to a bet.
+
+Now let me summarize the opponent's behavior:
+- As Player 1: Always checked (Hands 2, 4, 6, 8). Never bet.
+- As Player 2: Always checked (Hands 1, 3, 5, 7). Never bet.
+- When facing a bet as Player 2: Always folded (Hands 2, 4, 8).
+- With King as Player 2: Checked (Hand 7). Did NOT bet.
+- With King as Player 1: Checked (Hand 6). Did NOT bet.
+
+Key observations:
+1. The opponent NEVER bet in any hand. This is a strong indicator of Type A (never bets).
+2. The opponent folded to every bet. This is consistent with Type A (folds to bets).
+3. The opponent checked with King as both Player 1 and Player 2. This rules out Type E (bets with King), Type C (very aggressive), and makes Type B unlikely (value-bets King).
+4. The opponent never called a bet. Type A ""calls only with the King, otherwise checks or folds."" But we never saw the opponent face a bet with King.
+
+Wait, let me re-check. In Hands 2, 4, 8, the opponent was Player 1 and checked, then the learner (Player 2) bet, and the opponent folded. We don't know the opponent's card in these hands. But the opponent folded regardless.
+
+For Type A: ""never bets, calls only with the King, otherwise checks or folds.""
+- Never bets: ✓ (opponent never bet in 8 hands)
+- Calls only with King: We never saw the opponent call, but we also never saw the opponent face a bet with King (in the hands where opponent was Player 2 facing a bet, we don't know their card). Actually, in Hands 2, 4, 8, the opponent was Player 1 and folded to Player 2's bet. We don't know their card.
+- Otherwise checks or folds: ✓ (opponent always checked or folded)
+
+For Type E: ""bets and calls only with the King, otherwise checks or folds.""
+- Bets with King: ✗ (opponent had King in Hands 6 and 7, and checked both times)
+- This rules out Type E.
+
+For Type B: ""value-bets the King, sometimes bluffs with the Jack, checks the Queen, and calls with the Queen only some of the time.""
+- Value-bets King: ✗ (opponent had King in Hands 6 and 7, checked both times)
+- This makes Type B very unlikely.
+
+For Type C: ""very aggressive: bets and calls with almost any card.""
+- ✗ (opponent never bet, never called)
+- This rules out Type C.
+
+For Type D: ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+- The opponent never bet, so there's no evidence of bluffing. But also, the learner never folded to the opponent's bets (because the opponent never bet). So the adaptive condition was never triggered.
+- However, starting close to equilibrium would mean the opponent should sometimes bet with King. But the opponent checked with King in both Hands 6 and 7.
+- This makes Type D unlikely.
+
+So the evidence strongly points to Type A:
+- Never bets (8 hands, 0 bets)
+- Always checks or folds
+- Folds to all bets
+- Even with King, checks rather than bets
+
+The probability should be very high for Type A. Let me assign probabilities:
+- Type A: 0.90 (strongly supported by all evidence)
+- Type B: 0.03 (ruled out by not value-betting King)
+- Type C: 0.01 (ruled out by never betting or calling)
+- Type D: 0.03 (ruled out by not betting with King, though adaptive condition never triggered)
+- Type E: 0.03 (ruled out by not betting with King in Hands 6 and 7)
+
+Actually, let me reconsider. The sample is only 8 hands. With King appearing in 2 hands (6 and 7), and the opponent checking both times, this is strong evidence against Type E and Type B. But with only 2 observations, there's a small chance of deviation.
+
+Let me adjust:
+- Type A: 0.88
+- Type B: 0.04
+- Type C: 0.01
+- Type D: 0.04
+- Type E: 0.03
+
+These sum to 1.00. Let me make sure: 0.88 + 0.04 + 0.01 + 0.04 + 0.03 = 1.00. Yes.
+
+Actually, I want to be more decisive. The evidence is very strong for Type A. The opponent never bet in 8 hands, checked with King twice, and folded to every bet. This is almost textbook Type A.
+
+Let me go with:
+- Type A: 0.92
+- Type B: 0.03
+- Type C: 0.01
+- Type D: 0.02
+- Type E: 0.02
+
+Sum: 0.92 + 0.03 + 0.01 + 0.02 + 0.02 = 1.00. Good.",112.72,2344,669,stop,True,True,True,True,1.0,Type A,Type A,0.92,0.0834,0.0082,True,"The opponent never bet in any of the 8 hands (including twice holding the King), always checked or folded, and folded to every bet, which is the defining signature of the very passive Type A bot that never initiates aggression.",,0.92,0.03,0.01,0.02,0.02
+rock_03,1,Rock,Type A,2293170684,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:52:15+00:00,"{""probs"": {""Type A"": 0.87, ""Type B"": 0.03, ""Type C"": 0.01, ""Type D"": 0.04, ""Type E"": 0.05}, ""prediction"": ""Type A"", ""evidence"": ""The opponent never initiated a bet in any of the 8 hands, folded to all three bets, and checked back even when holding the King three times, perfectly matching Type A's 'never bets, calls only with King, otherwise checks or folds' profile.""}","Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is.
+
+Let me go through each hand and note the opponent's actions:
+
+Hand 1: I'm Player 1 with Queen. I checked. Opponent checked. Showdown: opponent had Jack.
+- Opponent with Jack checked back. This is consistent with Type A (never bets), Type B (checks Queen, but Jack could be a bluff or check), Type E (bets only with King, otherwise checks). Type C would likely bet with Jack. Type D might check early.
+
+Hand 2: I'm Player 2 with Queen. Opponent checked. I checked. Showdown: opponent had King.
+- Opponent with King checked. This is interesting. Type A never bets, so checking King is consistent. Type B value-bets King, so checking King is somewhat inconsistent (but B might not always bet). Type C bets with almost any card, so checking King is inconsistent. Type E bets only with King, so checking King is inconsistent. Type D starts close to equilibrium, so might check King sometimes.
+
+Wait, let me re-read. Opponent checked, I checked, showdown opponent had King. So the opponent had King and chose to check. This is unusual for most types except Type A (never bets) and possibly Type D early on.
+
+Hand 3: I'm Player 1 with Jack. I bet. Opponent folded.
+- Opponent folded to a bet with Jack. This is consistent with Type A (folds to bets unless has King), Type B (folds to bets with Jack sometimes), Type E (folds to bets unless has King). Type C would call with almost any card, so folding is inconsistent. Type D might fold early.
+
+Hand 4: I'm Player 2 with Queen. Opponent checked. I checked. Showdown: opponent had King.
+- Again, opponent with King checked. Same as Hand 2. Consistent with Type A. Inconsistent with Type B (value-bets King), Type C (bets with almost any card), Type E (bets with King).
+
+Hand 5: I'm Player 1 with King. I bet. Opponent folded.
+- Opponent folded to a bet. Consistent with Type A, Type B (folds to King bet sometimes), Type E. Inconsistent with Type C (calls with almost any card).
+
+Hand 6: I'm Player 2 with Jack. Opponent checked. I checked. Showdown: opponent had Queen.
+- Opponent with Queen checked. Consistent with Type A (never bets), Type B (checks Queen), Type E (checks with non-King). Inconsistent with Type C (bets with almost any card).
+
+Hand 7: I'm Player 1 with King. I bet. Opponent folded.
+- Opponent folded to a bet. Consistent with Type A, Type B, Type E. Inconsistent with Type C.
+
+Hand 8: I'm Player 2 with Jack. Opponent checked. I checked. Showdown: opponent had King.
+- Opponent with King checked. Again consistent with Type A. Inconsistent with Type B, C, E.
+
+Now let me summarize the opponent's observed actions:
+- Hand 1: Jack, checked (when facing check from P1)
+- Hand 2: King, checked (when facing check from P1)
+- Hand 3: Folded to bet (card unknown)
+- Hand 4: King, checked (when facing check from P1)
+- Hand 5: Folded to bet (card unknown)
+- Hand 6: Queen, checked (when facing check from P1)
+- Hand 7: Folded to bet (card unknown)
+- Hand 8: King, checked (when facing check from P1)
+
+Key observations:
+1. The opponent NEVER bet in any hand. This is a very strong signal.
+2. The opponent folded to all 3 bets (Hands 3, 5, 7).
+3. The opponent checked back in all 5 hands where they were Player 2 and faced a check.
+4. The opponent had King 3 times (Hands 2, 4, 8) and checked all 3 times.
+
+Now let me evaluate each type:
+
+Type A (very passive: never bets, calls only with King, otherwise checks or folds):
+- Never bets: ✓ (consistent with all 8 hands)
+- Calls only with King: We don't see any calls, but the opponent folded to all 3 bets. If the opponent had King in any of those hands, they should have called. But we don't know the cards in Hands 3, 5, 7. However, the fact that they folded to all 3 bets is consistent with not having King in those hands.
+- Otherwise checks or folds: ✓
+- This is very consistent.
+
+Type B (equilibrium: value-bets King, sometimes bluffs with Jack, checks Queen, calls with Queen sometimes):
+- Should value-bet King: But opponent checked King 3 times (Hands 2, 4, 8). This is very inconsistent.
+- Should sometimes bluff with Jack: We don't see this, but it's ""sometimes"" so could be absent.
+- Very inconsistent with the data.
+
+Type C (very aggressive: bets and calls with almost any card):
+- Should bet with almost any card: But opponent never bet. Very inconsistent.
+- Should call with almost any card: But opponent folded to all 3 bets. Very inconsistent.
+- Extremely inconsistent.
+
+Type D (adaptive: starts close to equilibrium, bluffs with any card once learner folds often):
+- Starts close to equilibrium: Would value-bet King sometimes. But opponent checked King 3 times. Inconsistent.
+- The learner didn't fold to any bets (the learner was the one betting), so the adaptive condition might not trigger.
+- Still, the initial equilibrium behavior would include betting King, which didn't happen.
+- Inconsistent.
+
+Type E (cautious: bets and calls only with King, otherwise checks or folds):
+- Bets only with King: But opponent had King 3 times and never bet. Inconsistent.
+- Calls only with King: Consistent with folding to bets (assuming no King in those hands).
+- The key issue is that Type E should BET with King, but the opponent checked King 3 times.
+- Inconsistent.
+
+So the strongest match is Type A. The opponent:
+- Never bet (consistent with ""never bets"")
+- Folded to all bets (consistent with ""folds unless has King"")
+- Checked back when facing checks (consistent with ""checks or folds"")
+- Had King 3 times and checked all 3 times (consistent with ""never bets"")
+
+The only slight concern is that Type A ""calls only with King"" - we don't see any calls, but that's because the opponent might not have had King in the hands where they faced a bet. With 3 folds and 3 Kings in other hands, it's plausible the opponent didn't have King in the 3 betting hands.
+
+Let me assign probabilities:
+- Type A: Very high, maybe 0.85-0.90
+- Type B: Very low, maybe 0.02-0.05 (checking King 3 times is very unlikely for equilibrium)
+- Type C: Essentially 0, maybe 0.01
+- Type D: Very low, maybe 0.02-0.05
+- Type E: Low, maybe 0.05-0.10 (the ""bets only with King"" part is violated, but the ""otherwise checks or folds"" is consistent)
+
+Wait, let me reconsider Type E. Type E says ""bets and calls only with the King, otherwise checks or folds."" The opponent had King 3 times and checked all 3. This directly contradicts ""bets... only with the King"" - it should bet with King. So Type E is also quite inconsistent.
+
+But Type A says ""never bets, calls only with the King, otherwise checks or folds."" The opponent never bet, which is perfectly consistent. The opponent folded to all bets, which is consistent with not having King in those hands.
+
+Let me finalize:
+- Type A: 0.88
+- Type B: 0.03
+- Type C: 0.01
+- Type D: 0.03
+- Type E: 0.05
+
+These sum to 1.00. Let me adjust slightly.
+
+Actually, let me reconsider. The opponent had King 3 times out of 8 hands and checked all 3. For Type A, this is perfectly fine (never bets). For Type E, this is a strong contradiction (should bet with King). For Type B, this is also a strong contradiction (should value-bet King).
+
+I'll go with:
+- Type A: 0.87
+- Type B: 0.03
+- Type C: 0.01
+- Type D: 0.04
+- Type E: 0.05
+
+Sum = 1.00. Good.
+
+Prediction: Type A.
+Evidence: The opponent never initiated a bet across all 8 hands and folded to every bet, while checking back even with the King three times, perfectly matching the ""never bets, calls only with King"" profile of Type A.",104.88,2156,657,stop,True,True,True,True,1.0,Type A,Type A,0.87,0.1393,0.022,True,"The opponent never initiated a bet in any of the 8 hands, folded to all three bets, and checked back even when holding the King three times, perfectly matching Type A's 'never bets, calls only with King, otherwise checks or folds' profile.",,0.87,0.03,0.01,0.04,0.05
+exploiter_01,1,Exploiter,Type D,974391396,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:54:00+00:00,"{""probs"": {""Type A"": 0.00, ""Type B"": 0.05, ""Type C"": 0.60, ""Type D"": 0.35, ""Type E"": 0.00}, ""prediction"": ""Type C"", ""evidence"": ""The opponent bet in 6 of 8 hands (including bluffs with the Jack in Hands 2 and 7) and only folded when facing a bet as Player 2, a pattern far too aggressive for equilibrium or cautious play but consistent with a very aggressive bot that bets with almost any card.""}","Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand and note the opponent's actions:
+
+Hand 1: I'm Player 1 with King. I bet. Opponent folded. 
+- Opponent folded to a bet with an unknown card. This is consistent with Types A, B, C, D, E (all could fold to a bet depending on their card).
+
+Hand 2: I'm Player 2 with King. Opponent bet. I called. Showdown: opponent had Jack.
+- Opponent bet with Jack. This is a bluff (Jack is the lowest card). 
+- Type A: never bets. INCONSISTENT.
+- Type B: sometimes bluffs with Jack. CONSISTENT.
+- Type C: bets with almost any card. CONSISTENT.
+- Type D: bluffs with any card once learner folds often. CONSISTENT.
+- Type E: bets only with King. INCONSISTENT.
+
+Hand 3: I'm Player 1 with King. I bet. Opponent folded.
+- Opponent folded to a bet. Consistent with all types.
+
+Hand 4: I'm Player 2 with Queen. Opponent bet. I folded.
+- Opponent bet with unknown card. Could be any type that bets.
+- Type A: never bets. INCONSISTENT.
+- Type B: could bet (bluff with Jack or value with King). CONSISTENT.
+- Type C: bets with almost any card. CONSISTENT.
+- Type D: could bet. CONSISTENT.
+- Type E: bets only with King. CONSISTENT (if they had King).
+
+Hand 5: I'm Player 1 with Jack. I checked. Opponent bet. I folded.
+- Opponent bet after I checked. This means opponent initiated a bet.
+- Type A: never bets. INCONSISTENT.
+- Type B: could bet (bluff or value). CONSISTENT.
+- Type C: bets with almost any card. CONSISTENT.
+- Type D: could bet. CONSISTENT.
+- Type E: bets only with King. CONSISTENT (if they had King).
+
+Hand 6: I'm Player 2 with Queen. Opponent bet. I folded.
+- Opponent bet with unknown card.
+- Type A: never bets. INCONSISTENT.
+- Type B: could bet. CONSISTENT.
+- Type C: bets with almost any card. CONSISTENT.
+- Type D: could bet. CONSISTENT.
+- Type E: bets only with King. CONSISTENT.
+
+Hand 7: I'm Player 1 with Queen. I checked. Opponent bet. I called. Showdown: opponent had Jack.
+- Opponent bet with Jack (bluff).
+- Type A: never bets. INCONSISTENT.
+- Type B: sometimes bluffs with Jack. CONSISTENT.
+- Type C: bets with almost any card. CONSISTENT.
+- Type D: bluffs with any card. CONSISTENT.
+- Type E: bets only with King. INCONSISTENT.
+
+Hand 8: I'm Player 2 with Jack. Opponent bet. I folded.
+- Opponent bet with unknown card.
+- Type A: never bets. INCONSISTENT.
+- Type B: could bet. CONSISTENT.
+- Type C: bets with almost any card. CONSISTENT.
+- Type D: could bet. CONSISTENT.
+- Type E: bets only with King. CONSISTENT.
+
+Now let me summarize the opponent's betting behavior:
+- Hand 1: Folded to bet (as Player 2)
+- Hand 2: Bet with Jack (bluff)
+- Hand 3: Folded to bet (as Player 2)
+- Hand 4: Bet (as Player 1)
+- Hand 5: Bet (as Player 1, after I checked)
+- Hand 6: Bet (as Player 1)
+- Hand 7: Bet with Jack (bluff, as Player 1 after I checked)
+- Hand 8: Bet (as Player 1)
+
+The opponent bet in hands 2, 4, 5, 6, 7, 8 - that's 6 out of 8 hands where they had the opportunity to act first (as Player 1) or respond to a check. Wait, let me re-check.
+
+Actually, let me re-examine:
+- Hand 1: Opponent is Player 2, I bet, they fold. (They didn't bet)
+- Hand 2: Opponent is Player 1, they bet with Jack. (They bet)
+- Hand 3: Opponent is Player 2, I bet, they fold. (They didn't bet)
+- Hand 4: Opponent is Player 1, they bet. (They bet)
+- Hand 5: Opponent is Player 2, I checked, they bet. (They bet)
+- Hand 6: Opponent is Player 1, they bet. (They bet)
+- Hand 7: Opponent is Player 2, I checked, they bet with Jack. (They bet)
+- Hand 8: Opponent is Player 1, they bet. (They bet)
+
+So the opponent bet in 6 out of 8 hands. They only didn't bet in hands 1 and 3, where they were Player 2 facing a bet and folded.
+
+Key observations:
+1. The opponent bet very frequently (6/8 hands where they had a chance to act).
+2. The opponent bluffed with Jack at least twice (Hands 2 and 7).
+3. The opponent folded to bets only when they were Player 2 facing a bet (Hands 1 and 3).
+4. The opponent never showed a King in showdown (we saw Jack in hands 2 and 7).
+
+Now let me evaluate each type:
+
+Type A (very passive, never bets): The opponent bet 6 times. This is completely inconsistent. Probability ≈ 0.
+
+Type B (equilibrium: value-bets King, sometimes bluffs with Jack, checks Queen, calls with Queen sometimes): The opponent bet very frequently. In equilibrium, you'd expect betting maybe 1/3 of the time with Jack (bluff) and always with King, and checking Queen. But the opponent bet in 6/8 hands. This seems too aggressive for equilibrium. However, it's possible if they happened to have King or Jack often. But 6/8 is very high. Also, in equilibrium, when facing a bet as Player 2, you'd fold with Jack and sometimes call with Queen. The opponent folded in hands 1 and 3 (facing a bet as Player 2), which is consistent. But the frequency of betting is too high for equilibrium. Probability is low but not zero.
+
+Type C (very aggressive: bets and calls with almost any card): The opponent bet in 6/8 hands, bluffed with Jack multiple times. This is very consistent with Type C. The only hands they didn't bet were when they were Player 2 facing a bet (and they folded). This is very consistent with Type C.
+
+Type D (adaptive: starts close to equilibrium, bluffs with any card once learner folds often): The learner folded in hands 4, 5, 6, 8 (4 folds to bets). The opponent started betting more aggressively. But we don't see a clear transition - they were betting from the start (Hand 2). However, the early hands (1-3) show folding to bets, and then later hands show more betting. Actually, looking more carefully:
+- Hand 2: Bet with Jack (early)
+- Hand 4: Bet
+- Hand 5: Bet
+- Hand 6: Bet
+- Hand 7: Bet with Jack
+- Hand 8: Bet
+
+The opponent was betting from Hand 2 onwards. The learner folded in hands 4, 5, 6, 8. This could be adaptive behavior. But the very first opportunity (Hand 2) already showed a bluff, which might be too early for ""adaptive"" behavior. However, it's possible.
+
+Type E (cautious: bets and calls only with King): The opponent bet with Jack in hands 2 and 7. This is inconsistent with Type E. Probability ≈ 0.
+
+So the main candidates are Type C and Type D, with Type B being a distant third.
+
+Let me think more carefully:
+
+Type C: Bets with almost any card. The opponent bet 6/8 times. They bluffed with Jack twice. They folded to bets as Player 2 (hands 1, 3). This is very consistent. The only question is whether they would fold to a bet - Type C ""bets and calls with almost any card"" - but they folded in hands 1 and 3. However, ""almost any card"" doesn't mean ""any card"" - they might fold with Jack sometimes. Actually, Type C says ""bets and calls with almost any card"" - this suggests they would call bets too, not fold. But they folded in hands 1 and 3. Hmm, but ""almost any"" leaves room for some folding.
+
+Type D: Starts close to equilibrium, then bluffs more. The opponent's behavior shows consistent betting from early on. The learner did fold frequently (4 times), which could trigger the adaptive behavior. But the first bet (Hand 2) was already a bluff with Jack, which might be too early.
+
+Actually, let me reconsider. In Kuhn Poker, when you're Player 2 and face a bet, you can fold or call. Type C ""bets and calls with almost any card"" - this might mean they call bets with almost any card too. But in hands 1 and 3, they folded. This slightly reduces the probability of Type C.
+
+But wait - ""almost any card"" could mean they fold with the worst card (Jack) sometimes. Or it could mean they're aggressive but not irrational.
+
+Let me also consider: the opponent bet in 6 out of 8 hands. In equilibrium (Type B), the betting frequency would be much lower. In Type C, betting with ""almost any card"" would give a high frequency. In Type D, it depends on how adaptive they've become.
+
+Given the evidence:
+- 6/8 hands with a bet (very high frequency)
+- Bluffed with Jack at least twice
+- Folded to bets as Player 2 (hands 1, 3)
+- No King was ever seen in showdown
+
+I think Type C is the most likely, with Type D as a secondary possibility. Type B is possible but the frequency is too high. Types A and E are essentially ruled out.
+
+Let me assign probabilities:
+- Type A: 0.00 (never bets, but opponent bet 6 times)
+- Type B: 0.05 (equilibrium, but betting frequency too high)
+- Type C: 0.60 (very aggressive, bets with almost any card, consistent with high betting frequency and bluffs)
+- Type D: 0.30 (adaptive, could explain the pattern, but the early bluff in Hand 2 is slightly early)
+- Type E: 0.05 (bets only with King, but we saw Jack bluffs)
+
+Wait, let me reconsider Type D more carefully. Type D ""starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The learner folded in hands 4, 5, 6, 8. But the opponent was already bluffing in Hand 2 (before any folds). This makes Type D less likely because the adaptive behavior should come after observing folds. However, Hand 2 could be a random equilibrium bluff (equilibrium does include some Jack bluffs). Then after the learner folds in hands 4, 5, 6, the opponent escalates. This is plausible.
+
+Actually, looking at the sequence:
+- Hand 1: Fold to bet (as P2)
+- Hand 2: Bet with Jack (bluff) - could be equilibrium
+- Hand 3: Fold to bet (as P2)
+- Hand 4: Bet (as P1) - learner folds
+- Hand 5: Bet (as P2, after check) - learner folds
+- Hand 6: Bet (as P1) - learner folds
+- Hand 7: Bet with Jack (as P2, after check) - learner calls
+- Hand 8: Bet (as P1) - learner folds
+
+The pattern shows the opponent betting consistently. The learner folded 4 times (hands 4, 5, 6, 8). This could trigger Type D's adaptive behavior. But the early bluff in Hand 2 is a bit early for ""adaptive.""
+
+I'll go with:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.55
+- Type D: 0.35
+- Type E: 0.05
+
+Actually, let me reconsider. The opponent folded to bets in hands 1 and 3. Type C says ""bets and calls with almost any card."" If they're very aggressive, they might call bets too, not fold. The fact that they folded twice suggests they're not calling everything. This slightly reduces Type C probability.
+
+But ""almost any card"" doesn't mean ""every card"" - they might fold with Jack sometimes. And in Kuhn Poker, folding with Jack to a bet is actually rational.
+
+Let me also note: the opponent never called a bet. In hands 1 and 3, they folded. In all other hands, they were the one betting. So we never saw them call. This is interesting - Type C says ""bets and calls with almost any card"" but we never saw a call. However, we also never had a situation where they needed to call (they were either the first to bet or they folded).
+
+Actually wait - in Hand 7, I checked and they bet, and I called. So they were the aggressor. In Hand 5, I checked and they bet, and I folded. So they were the aggressor.
+
+The opponent's pattern: when they act first (as P1), they always bet (hands 2, 4, 6, 8). When they act second (as P2), they bet if I check (hands 5, 7) and fold if I bet (hands 1, 3). This is a very aggressive pattern.
+
+This is most consistent with Type C (very aggressive). Type D is also possible but the consistent aggression from the start makes Type C more likely.
+
+Final probabilities:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.60
+- Type D: 0.30
+- Type E: 0.05
+
+These sum to 1.00. Let me go with this.
+
+Actually, I want to reconsider Type E. Type E ""bets and calls only with the King."" We saw the opponent bet with Jack in hands 2 and 7. This directly contradicts Type E. So Type E should be 0.00.
+
+And Type A ""never bets"" - the opponent bet 6 times. So Type A should be 0.00.
+
+Revised:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.65
+- Type D: 0.30
+- Type E: 0.00
+
+Sum = 1.00. Good.
+
+Hmm, but let me think about whether Type B could explain this. In equilibrium, the betting frequency is:
+- King: always bet (1/3 of hands)
+- Jack: bluff with probability 1/3 (1/3 × 1/3 = 1/9 of hands)
+- Queen: check
+
+So overall betting probability is about 1/3 + 1/9 = 4/9 ≈ 0.44. Over 8 hands, we'd expect about 3-4 bets. We saw 6 bets. This is higher than equilibrium but not impossibly so. However, the specific pattern of always betting as P1 and betting after checks as P2 is more aggressive than equilibrium.
+
+I'll stick with my assessment. Type C is most likely, Type D is second.
+
+Let me finalize:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.60
+- Type D: 0.35
+- Type E: 0.00
+
+Sum = 1.00.",194.21,3785,671,stop,True,True,True,True,1.0,Type C,Type C,0.35,1.0498,0.785,False,"The opponent bet in 6 of 8 hands (including bluffs with the Jack in Hands 2 and 7) and only folded when facing a bet as Player 2, a pattern far too aggressive for equilibrium or cautious play but consistent with a very aggressive bot that bets with almost any card.",,0.0,0.05,0.6,0.35,0.0
+exploiter_02,1,Exploiter,Type D,1166648903,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:57:14+00:00,"{""probs"": {""Type A"": 0.00, ""Type B"": 0.05, ""Type C"": 0.80, ""Type D"": 0.15, ""Type E"": 0.00}, ""prediction"": ""Type C"", ""evidence"": ""The opponent bet in all 8 hands (100% betting frequency) including confirmed bluffs with Jack in hands 7 and 8, which is far too aggressive for equilibrium or adaptive play and perfectly matches a bot that bets with almost any card.""}","Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is.
+
+Let me go through each hand:
+
+Hand 1: Player 1 (learner) has Queen, checks. Opponent bets. Learner folds. No showdown.
+- Opponent bet when facing a check. This means the opponent is betting with some card.
+
+Hand 2: Player 2 (learner) has Queen, opponent bets. Learner folds. No showdown.
+- Opponent (Player 1) bet with some card.
+
+Hand 3: Player 1 (learner) has Jack, checks. Opponent bets. Learner folds. No showdown.
+- Opponent bet when facing a check.
+
+Hand 4: Player 2 (learner) has Queen, opponent bets. Learner folds. No showdown.
+- Opponent (Player 1) bet with some card.
+
+Hand 5: Player 1 (learner) has Jack, checks. Opponent bets. Learner folds. No showdown.
+- Opponent bet when facing a check.
+
+Hand 6: Player 2 (learner) has Queen, opponent bets. Learner folds. No showdown.
+- Opponent (Player 1) bet with some card.
+
+Hand 7: Player 1 (learner) has Queen, checks. Opponent bets. Learner calls. Showdown: opponent had Jack. Learner won.
+- Opponent bet with Jack (bluff). Learner called and won.
+
+Hand 8: Player 2 (learner) has King, opponent bets. Learner calls. Showdown: opponent had Jack. Learner won.
+- Opponent (Player 1) bet with Jack. Learner called with King and won.
+
+Key observations:
+1. The opponent bets very frequently - in all 8 hands, the opponent either bet (when Player 1) or bet (when Player 2). Let me recheck:
+   - Hand 1: Opponent (P2) bet after P1 checked
+   - Hand 2: Opponent (P1) bet
+   - Hand 3: Opponent (P2) bet after P1 checked
+   - Hand 4: Opponent (P1) bet
+   - Hand 5: Opponent (P2) bet after P1 checked
+   - Hand 6: Opponent (P1) bet
+   - Hand 7: Opponent (P2) bet after P1 checked
+   - Hand 8: Opponent (P1) bet
+
+So the opponent bet in ALL 8 hands. This is extremely aggressive.
+
+2. The opponent's revealed cards:
+   - Hand 7: Opponent had Jack (bet with Jack - a bluff)
+   - Hand 8: Opponent had Jack (bet with Jack - a bluff)
+
+3. The opponent never checks - always bets. This is very aggressive behavior.
+
+Now let me evaluate each type:
+
+Type A (very passive): Never bets, calls only with King, otherwise checks or folds. This is completely inconsistent - the opponent bet in every single hand. Probability ≈ 0.
+
+Type B (equilibrium): Value-bets King, sometimes bluffs with Jack, checks Queen, calls with Queen sometimes. The opponent bet in ALL 8 hands, including when they might have had a Queen. In equilibrium, you wouldn't bet with Queen. Also, the opponent bet with Jack in hands 7 and 8, which is consistent with bluffing, but the frequency of betting (100%) is too high for equilibrium. In equilibrium, you'd check with Queen. Probability is low but not zero.
+
+Type C (very aggressive): Bets and calls with almost any card. This fits perfectly - the opponent bet in every single hand regardless of card. The revealed cards were Jacks (bluffs), and the opponent bet in all situations. Probability is high.
+
+Type D (adaptive): Starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often. The learner folded in hands 1, 2, 3, 4, 5, 6 (6 folds). By hand 7, the learner called instead of folding. But the opponent was already betting from the very first hand. If it were adaptive, it would start with equilibrium play (checking with Queen, sometimes betting with King, sometimes bluffing with Jack). But the opponent bet in hand 1, 2, 3, 4, 5, 6 - all before the learner had folded ""often."" Actually, the learner folded in hands 1-6, so by hand 7 the adaptive bot might have started bluffing more. But the key issue is that the opponent was betting from the very start (hand 1), which is not ""close to equilibrium."" In equilibrium, you wouldn't bet 100% of the time. So Type D is less likely than Type C.
+
+Wait, let me reconsider Type D. ""Starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The first few hands show betting every time. If the bot started close to equilibrium, it would check with Queen and only bet with King or sometimes Jack. But we see betting in all 8 hands. However, we don't know the opponent's cards in hands 1-6. It's possible the opponent had King in some of those hands. But with 8 hands and 3 cards, the probability of getting King 8 times is very low. More likely, the opponent is betting with various cards.
+
+Actually, let me reconsider. In hands 1, 3, 5, 7: the learner is Player 1 and checks. The opponent (Player 2) bets. In hands 2, 4, 6, 8: the learner is Player 2 and the opponent (Player 1) bets.
+
+For the opponent to bet in all 8 hands:
+- When opponent is P1 (hands 2, 4, 6, 8): P1 bets. In equilibrium, P1 bets with King (always) and Jack (sometimes, ~1/3). Checks with Queen. So betting 4/4 times as P1 is aggressive but not impossible if they got King or Jack each time.
+- When opponent is P2 (hands 1, 3, 5, 7): P2 faces a check from P1. In equilibrium, P2 bets with King (always) and Jack (sometimes as a bluff). Checks with Queen. So betting 4/4 times as P2 is also aggressive.
+
+The fact that the opponent bet in ALL 8 hands strongly suggests Type C (very aggressive: bets with almost any card).
+
+Type E (cautious): Bets and calls only with King, otherwise checks or folds. This is inconsistent with betting in all 8 hands. Probability ≈ 0.
+
+Let me assign probabilities:
+- Type A: 0.00 (never bets, but opponent bet every time)
+- Type B: 0.05 (equilibrium would not bet 100% of the time, but some overlap with bluffing)
+- Type C: 0.80 (bets with almost any card, fits perfectly)
+- Type D: 0.15 (adaptive could explain the pattern if it adapted quickly, but the betting from hand 1 makes this less likely)
+- Type E: 0.00 (only bets with King, but opponent bet in all 8 hands)
+
+Wait, let me reconsider Type D more carefully. ""Starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The learner folded in hands 1-6. If the bot started at equilibrium, it would bet maybe 50-60% of the time initially. But we see 100% betting. However, we don't know the cards in hands 1-6. It's possible the bot had King or Jack in those hands. But 8 consecutive bets is very unlikely under equilibrium.
+
+Actually, for Type D, the key question is: does the pattern show a shift? Hands 1-6: opponent bets, learner folds. Hand 7: opponent bets, learner calls. Hand 8: opponent bets, learner calls. The opponent's behavior doesn't change - it bets in all 8 hands. If it were adaptive, we might expect it to start more conservatively and then become more aggressive. But we see consistent aggression from the start. This makes Type C more likely.
+
+However, there's a subtlety: we can't observe the opponent's cards in hands 1-6. It's possible the opponent had King in some of those hands (which would be consistent with equilibrium). But the probability of getting King or a bluff-worthy card 8 times in a row is low.
+
+Let me also consider: in hand 7, the opponent had Jack and bet (bluff). In hand 8, the opponent had Jack and bet (bluff). Two consecutive Jack bluffs. Under equilibrium, you'd bluff with Jack about 1/3 of the time. Getting Jack twice in a row is possible but the overall pattern of 100% betting is the key indicator.
+
+I'll go with:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.80
+- Type D: 0.15
+- Type E: 0.00
+
+Actually, let me reconsider. The opponent bet in all 8 hands. For Type C (""bets and calls with almost any card""), this is a perfect fit. For Type D, the ""adaptive"" nature would mean it starts more conservatively. Since we see 100% betting from the very first hand, Type C is much more likely.
+
+But wait - could the opponent have had King in hands 1-6? With 3 cards and 8 hands, the probability of getting King at least 6 times (if we need King to justify betting in equilibrium) is very low. Even if we allow some Jack bluffs, getting 8 consecutive bets under equilibrium is unlikely.
+
+I'll finalize:
+- Type A: 0.00
+- Type B: 0.05
+- Type C: 0.80
+- Type D: 0.15
+- Type E: 0.00
+
+Prediction: Type C",127.74,2349,677,stop,True,True,True,True,1.0,Type C,Type C,0.15,1.8971,1.365,False,"The opponent bet in all 8 hands (100% betting frequency) including confirmed bluffs with Jack in hands 7 and 8, which is far too aggressive for equilibrium or adaptive play and perfectly matches a bot that bets with almost any card.",,0.0,0.05,0.8,0.15,0.0
+exploiter_03,1,Exploiter,Type D,2205399830,qwen3.8:27b-mlx,0.0,0.95,default,2026-10-27T17:59:22+00:00,"{""probs"": {""Type A"": 0.60, ""Type B"": 0.05, ""Type C"": 0.02, ""Type D"": 0.05, ""Type E"": 0.28}, ""prediction"": ""Type A"", ""evidence"": ""The opponent checked with the King in Hand 8 (ruling out B, C, D, and E which all bet the King) and folded four times to bets, showing extreme passivity consistent with Type A's 'never bets, otherwise checks or folds' profile, with the single bet in Hand 6","Let me analyze the 8-hand Kuhn Poker match to determine which bot type the opponent is most likely to be.
+
+Let me go through each hand and note what the opponent did:
+
+Hand 1: I'm Player 1 with King. I bet. Opponent folded. (Opponent's card unknown - could be J, Q, or K)
+Hand 2: I'm Player 2 with Queen. Opponent checked. I checked. Showdown: opponent had Jack. (Opponent with Jack checked)
+Hand 3: I'm Player 1 with King. I bet. Opponent folded. (Opponent's card unknown)
+Hand 4: I'm Player 2 with King. Opponent checked. I bet. Opponent folded. (Opponent's card unknown - folded to my bet)
+Hand 5: I'm Player 1 with King. I bet. Opponent folded. (Opponent's card unknown)
+Hand 6: I'm Player 2 with Queen. Opponent bet. I folded. (Opponent bet - card unknown)
+Hand 7: I'm Player 1 with Jack. I checked. Opponent checked. Showdown: opponent had Queen. (Opponent with Queen checked)
+Hand 8: I'm Player 2 with Queen. Opponent checked. I checked. Showdown: opponent had King. (Opponent with King checked)
+
+Now let me analyze the opponent's behavior:
+
+Key observations:
+1. Opponent folded to bets 3 times (Hands 1, 3, 5) - when I bet with King as Player 1
+2. Opponent folded to my bet in Hand 4 (when I was Player 2 with King)
+3. Opponent checked with Jack (Hand 2)
+4. Opponent bet once (Hand 6) - when I was Player 2 with Queen
+5. Opponent checked with Queen (Hand 7)
+6. Opponent checked with King (Hand 8)
+
+Wait, Hand 8 is very interesting. The opponent had the King and CHECKED. This is unusual for most types:
+- Type A (very passive): never bets, calls only with King, otherwise checks or folds. So with King, Type A would call, not check. But wait - in Hand 8, I'm Player 2 and the opponent is Player 1. Opponent checked, I checked, showdown. So the opponent with King checked as Player 1. Type A ""never bets"" - so checking with King is consistent with Type A. But Type A ""calls only with the King"" - this means when facing a bet, Type A calls with King. But here the opponent is the first player (Player 1) and chose to check. That's consistent with ""never bets.""
+
+- Type B (equilibrium): value-bets the King. So Type B would typically bet with King, not check. Checking with King is inconsistent with Type B.
+
+- Type C (very aggressive): bets and calls with almost any card. Would bet with King. Inconsistent.
+
+- Type D (adaptive): starts close to equilibrium, so would bet with King initially. Inconsistent.
+
+- Type E (cautious): bets and calls only with the King, otherwise checks or folds. So Type E WOULD bet with King. Checking with King is inconsistent with Type E.
+
+Wait, let me re-read Type E: ""bets and calls only with the King, otherwise checks or folds."" This means Type E bets with King. So checking with King (Hand 8) is inconsistent with Type E.
+
+Now let me reconsider Type A: ""very passive: never bets, calls only with the King, otherwise checks or folds.""
+- Never bets: consistent with all checks (Hands 2, 7, 8) and the one bet in Hand 6... wait, Hand 6 the opponent BET. Type A ""never bets"" - this is inconsistent with Hand 6.
+
+Hmm, but wait. Let me re-read Hand 6: ""You are Player 2 and hold the Queen. Opponent bet. You folded."" So the opponent (Player 1) bet. If Type A never bets, this is inconsistent.
+
+But wait - maybe I need to consider that the opponent's card in Hand 6 could be anything. If Type A never bets, then Hand 6 rules out Type A.
+
+Let me reconsider. Actually, let me re-read the types more carefully:
+
+Type A: ""very passive: never bets, calls only with the King, otherwise checks or folds.""
+- Never bets → Hand 6 (opponent bet) rules this out. Unless ""never bets"" is approximate.
+
+Type B: ""plays the equilibrium strategy: value-bets the King, sometimes bluffs with the Jack, checks the Queen, and calls with the Queen only some of the time.""
+- Value-bets King → Hand 8 (opponent checked with King) is inconsistent.
+- Checks Queen → Hand 7 (opponent checked with Queen) is consistent.
+- Sometimes bluffs with Jack → Hand 2 (opponent checked with Jack) could be consistent (doesn't always bluff).
+
+Type C: ""very aggressive: bets and calls with almost any card.""
+- Would bet with King → Hand 8 inconsistent.
+- Would bet with Queen → Hand 7 inconsistent.
+- Would bet with Jack → Hand 2 inconsistent.
+- But Hand 6 shows a bet, which is consistent.
+- Overall, too many checks to be Type C.
+
+Type D: ""adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.""
+- Starts close to equilibrium → would value-bet King initially.
+- But Hand 8 shows checking with King.
+- The learner folded in Hands 1, 3, 5 (3 times to bets). So the adaptive bot might start bluffing more.
+- But Hand 8 still shows checking with King, which is odd.
+
+Type E: ""cautious: bets and calls only with the King, otherwise checks or folds.""
+- Bets with King → Hand 8 (checked with King) is inconsistent.
+- Otherwise checks or folds → consistent with Hands 2, 7.
+- Hand 6: opponent bet. If opponent had King, this is consistent. If not, inconsistent.
+- Hands 1, 3, 5: opponent folded to bets. If opponent had non-King, consistent with ""folds."" If opponent had King, Type E would call, not fold.
+
+Let me think about this differently. The key observations:
+1. Opponent checked with King (Hand 8) - this is very unusual for most types
+2. Opponent checked with Queen (Hand 7) - consistent with A, B, E
+3. Opponent checked with Jack (Hand 2) - consistent with A, B (sometimes), E
+4. Opponent bet once (Hand 6) - inconsistent with A
+5. Opponent folded 4 times to bets (Hands 1, 3, 4, 5) - very passive
+
+The fact that the opponent checked with King (Hand 8) is the most striking observation. This rules out Type B (value-bets King), Type C (bets with almost any card), Type D (starts close to equilibrium, would bet King), and Type E (bets with King).
+
+Type A says ""never bets"" - but Hand 6 shows a bet. However, Type A also says ""calls only with the King, otherwise checks or folds."" The ""never bets"" part is violated by Hand 6.
+
+Wait, but maybe I should think about this probabilistically. Let me reconsider.
+
+Actually, let me reconsider Type A more carefully. ""Very passive: never bets, calls only with the King, otherwise checks or folds."" The ""never bets"" is a strong statement. Hand 6 shows the opponent betting. This is a strong contradiction.
+
+But what about Type E? ""Cautious: bets and calls only with the King, otherwise checks or folds."" This means Type E bets with King. Hand 8 shows checking with King. This is also a strong contradiction.
+
+Hmm, but maybe the types aren't perfectly deterministic. Let me think about which type is MOST consistent overall.
+
+Let me tally:
+- 4 folds to bets (Hands 1, 3, 4, 5) - very passive behavior
+- 1 bet (Hand 6) - aggressive action
+- 3 checks at showdown (Hands 2, 7, 8) - passive
+- Checked with King (Hand 8) - very unusual
+
+The overall pattern is extremely passive (4 folds, 3 checks) with one bet. The checking with King is the most puzzling.
+
+Actually, wait. Let me reconsider. In Hand 8, the opponent is Player 1 with King and checks. In Kuhn poker, as Player 1, you can check or bet. If Type E ""bets and calls only with the King,"" it would bet with King as Player 1. So checking with King contradicts Type E.
+
+For Type A, ""never bets"" contradicts Hand 6. But ""calls only with the King, otherwise checks or folds"" - the folding behavior in Hands 1, 3, 4, 5 is very consistent with Type A (folding with non-King cards).
+
+Actually, let me think about what cards the opponent likely had in each hand:
+- Hand 1: I have King, opponent has J or Q. Opponent folded. Consistent with A (folds with non-King), E (folds with non-King).
+- Hand 2: I have Queen, opponent has Jack. Opponent checked. Consistent with A, B, E.
+- Hand 3: I have King, opponent has J or Q. Opponent folded. Consistent with A, E.
+- Hand 4: I have King, opponent has J or Q. Opponent folded to my bet. Consistent with A, E.
+- Hand 5: I have King, opponent has J or Q. Opponent folded. Consistent with A, E.
+- Hand 6: I have Queen, opponent has J or K. Opponent bet. If opponent had K, consistent with E (bets with King). If opponent had J, inconsistent with A and E.
+- Hand 7: I have Jack, opponent has Queen. Opponent checked. Consistent with A, B, E.
+- Hand 8: I have Queen, opponent has King. Opponent checked. Inconsistent with B, C, D, E. Consistent with A (never bets).
+
+So the key tension is:
+- Hand 6 (opponent bet) contradicts Type A
+- Hand 8 (opponent checked with King) contradicts Type E
+
+If Hand 6 opponent had King, then Type E is partially consistent (bets with King in Hand 6, but checks with King in Hand 8 - inconsistent).
+If Hand 6 opponent had Jack, then Type A is contradicted (bets with Jack).
+
+Given that Hand 8 clearly shows checking with King (which contradicts B, C, D, E), and the overall behavior is very passive (4 folds), Type A seems most likely despite the one bet in Hand 6. Maybe Type A isn't perfectly ""never bets"" but is ""very passive"" and occasionally makes a mistake or has a small probability of betting.
+
+Actually, re-reading Type A: ""very passive: never bets, calls only with the King, otherwise checks or folds."" The ""never bets"" is quite absolute. But in practice, maybe it's approximately true.
+
+Let me also consider: could the opponent in Hand 6 have had the King? If so, and if we're looking at Type E, then Type E bets with King (Hand 6 consistent) but checks with King (Hand 8 inconsistent). That's contradictory within Type E.
+
+For Type A: the one bet in Hand 6 is the only inconsistency. Everything else (4 folds, 3 checks including with King) is perfectly consistent.
+
+I think the most likely type is Type A, with the Hand 6 bet being an anomaly or the ""never bets"" being approximate. The checking with King in Hand 8 strongly rules out B, C, D, and E.
+
+Let me assign probabilities:
+- Type A: 0.55 (most consistent overall, one anomaly in Hand 6)
+- Type B: 0.05 (checking with King rules this out strongly)
+- Type C: 0.02 (too passive, checking with King rules this out)
+- Type D: 0.05 (checking with King rules this out, though adaptive element)
+- Type E: 0.33 (bets with King in Hand 6 is consistent, but checking with King in Hand 8 is inconsistent)
+
+Wait, actually let me reconsider. The ""very passive"" description of Type A with ""never bets"" is quite strong. But the overall pattern of 4 folds and 3 checks (including with King) is extremely passive. The one bet could be a small deviation.
+
+Actually, I want to reconsider Type E more carefully. Type E: ""bets and calls only with the King, otherwise checks or folds.""
+- Hand 6: opponent bet. If opponent had King, this is consistent.
+- Hand 8: opponent checked with King. This is INCONSISTENT with Type E.
+- Hands 1, 3, 4, 5: opponent folded. If opponent had non-King (which they must since I had King), this is consistent with ""otherwise checks or folds.""
+- Hand 2: opponent checked with Jack. Consistent with ""otherwise checks or folds.""
+- Hand 7: opponent checked with Queen. Consistent with ""otherwise checks or folds.""
+
+So Type E has one clear inconsistency (Hand 8: checked with King instead of betting).
+
+Type A: ""never bets, calls only with the King, otherwise checks or folds.""
+- Hand 6: opponent bet. INCONSISTENT with ""never bets.""
+- Hand 8: opponent checked with King. Consistent with ""never bets.""
+- All other hands: consistent.
+
+So both Type A and Type E have exactly one inconsistency. But the overall pattern (4 folds, very passive) leans more toward Type A.
+
+Hmm, but actually, let me think about this differently. In Hand 6, the opponent is Player 1 and bets. The opponent's card could be J, Q, or K (since I have Q). If Type A ""never bets,"" this is a clear violation. If Type E ""bets only with King,"" then the opponent must have had King in Hand 6 for it to be consistent.
+
+In Hand 8, the opponent is Player 1 with King and checks. For Type E, this is a clear violation (should bet with King). For Type A, this is consistent (never bets).
+
+So:
+- Type A: 1 violation (Hand 6 bet)
+- Type E: 1 violation (Hand 8 check with King)
+
+But the overall pattern of extreme passivity (4 folds out of 4 opportunities to fold/call) strongly suggests Type A. Type E would be expected to bet with King, and we see the King check in Hand 8.
+
+I'll go with:
+- Type A: 0.50
+- Type B: 0.05
+- Type C: 0.02
+- Type D: 0.08
+- Type E: 0.35
+
+Actually, let me reconsider. The checking with King is a very strong signal against Type E. And the overall passivity (folding 4 times) is very strong for Type A. The one bet in Hand 6 could be a small probability deviation.
+
+Let me also think about Type D. ""Adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often."" The learner folded 3 times (Hands 1, 3, 5) before Hand 6. So by Hand 6, the adaptive bot might start bluffing. But Hand 8 (checking with King) still contradicts the equilibrium starting point. And the overall passivity doesn't match an adaptive bot that's supposed to be bluffing more.
+
+I'll finalize:
+- Type A: 0.52
+- Type B: 0.05
+- Type C: 0.02
+- Type D: 0.06
+- Type E: 0.35
+
+Hmm, actually let me reconsider the probabilities more carefully.
+
+The strongest evidence:
+1. Hand 8: Checked with King → strongly against B, C, D, E; strongly for A
+2. 4 folds to bets → strongly for A, E; against B, C, D
+3. Hand 6: Bet → against A; possibly for E (if had King)
+4. Hand 7: Checked with Queen → for A, B, E; against C
+5. Hand 2: Checked with Jack → for A, B, E; against C
+
+The checking with King (Hand 8) is the single most diagnostic observation. It essentially rules out B, C, D, and E (all of which would bet with King). This leaves Type A as the primary candidate.
+
+The one bet in Hand 6 is the only thing against Type A. But ""very passive"" might allow for rare deviations.
+
+I'll go with:
+- Type A: 0.55
+- Type B: 0.05
+- Type C: 0.02
+- Type D: 0.05
+- Type E: 0.33
+
+These sum to 1.00. Let me adjust: 0.55 + 0.05 + 0.02 + 0.05 + 0.33 = 1.00. Good.
+
+Actually, I want to be more decisive. The checking with King is very strong evidence. Let me increase Type A and decrease Type E.
+
+- Type A: 0.60
+- Type B: 0.05
+- Type C: 0.02
+- Type D: 0.05
+- Type E: 0.28
+
+Sum: 1.00. Good.
+
+Prediction: Type A.",195.49,4096,667,length,False,False,False,False,,,,,,,,,,,,,,

@@ -1,0 +1,36 @@
+{
+  "run_started_utc": "2026-10-27T18:07:08+00:00",
+  "model": "qwen3.8:27b-mlx",
+  "host": "http://localhost:11434",
+  "options": {
+    "temperature": 0.0,
+    "top_p": 0.95,
+    "seed": 2026,
+    "num_predict": 4096,
+    "num_ctx": 8192
+  },
+  "think": "false",
+  "repeats": 1,
+  "n_documents": 15,
+  "hands_per_match": 8,
+  "labels": {
+    "Rock": "Type A",
+    "Nash": "Type B",
+    "Maniac": "Type C",
+    "Exploiter": "Type D",
+    "Cautious": "Type E"
+  },
+  "definitions": {
+    "Type A": "very passive: never bets, calls only with the King, otherwise checks or folds.",
+    "Type B": "plays the equilibrium strategy: value-bets the King, sometimes bluffs with the Jack, checks the Queen, and calls with the Queen only some of the time.",
+    "Type C": "very aggressive: bets and calls with almost any card.",
+    "Type D": "adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.",
+    "Type E": "cautious: bets and calls only with the King, otherwise checks or folds."
+  },
+  "prompt_template": "Below is the full log of an {n_hands}-hand Kuhn Poker match, written from the learner's point of view. Kuhn Poker uses three cards (Jack < Queen < King). Each player antes 1 chip and receives one card. Player 1 checks or bets 1 chip. If Player 1 checks, Player 2 checks (showdown) or bets; facing a bet, a player calls or folds. The opponent's card is revealed only at showdown.\n\nThe opponent is exactly one of these bot types:\n{definitions}\n\nBased only on the log, estimate the probability of each type.\nOutput JSON only. Report each probability with two decimal places (e.g., 0.37), summing to 1:\n{{\"probs\": {{{prob_keys}}}, \"prediction\": \"<one of the type labels>\", \"evidence\": \"one sentence\"}}\n\n<match>\n{match_log}\n</match>",
+  "prompt_template_sha256": "378fa24ec562",
+  "nash_alpha": 0.2,
+  "dry_run": false,
+  "ollama_version": "0.40.11",
+  "model_digest": "5642e97495e1a088883805981563dcdc4a040c2f53388b7a41d1f24d3622cf7e"
+}

@@ -1,0 +1,9 @@
+Hand 1: You are Player 1 and hold the King. You bet. Opponent folded. No showdown; the opponent's card was not shown. You won 1 chip.
+Hand 2: You are Player 2 and hold the King. Opponent checked. You bet. Opponent folded. No showdown; the opponent's card was not shown. You won 1 chip.
+Hand 3: You are Player 1 and hold the Jack. You checked. Opponent checked. Showdown: the opponent had the Queen. You lost 1 chip.
+Hand 4: You are Player 2 and hold the Queen. Opponent checked. You checked. Showdown: the opponent had the King. You lost 1 chip.
+Hand 5: You are Player 1 and hold the Queen. You checked. Opponent checked. Showdown: the opponent had the Jack. You won 1 chip.
+Hand 6: You are Player 2 and hold the King. Opponent checked. You bet. Opponent folded. No showdown; the opponent's card was not shown. You won 1 chip.
+Hand 7: You are Player 1 and hold the King. You bet. Opponent called. Showdown: the opponent had the Queen. You won 2 chips.
+Hand 8: You are Player 2 and hold the Jack. Opponent bet. You folded. No showdown; the opponent's card was not shown. You lost 1 chip.
+Final result: you won 3 chips over 8 hands.

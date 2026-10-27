@@ -1,0 +1,24 @@
+Below is the full log of an 8-hand Kuhn Poker match, written from the learner's point of view. Kuhn Poker uses three cards (Jack < Queen < King). Each player antes 1 chip and receives one card. Player 1 checks or bets 1 chip. If Player 1 checks, Player 2 checks (showdown) or bets; facing a bet, a player calls or folds. The opponent's card is revealed only at showdown.
+
+The opponent is exactly one of these bot types:
+- Type A: very passive: never bets, calls only with the King, otherwise checks or folds.
+- Type B: plays the equilibrium strategy: value-bets the King, sometimes bluffs with the Jack, checks the Queen, and calls with the Queen only some of the time.
+- Type C: very aggressive: bets and calls with almost any card.
+- Type D: adaptive: starts close to equilibrium, but bluffs with any card once the learner has folded to its bets often.
+- Type E: cautious: bets and calls only with the King, otherwise checks or folds.
+
+Based only on the log, estimate the probability of each type.
+Output JSON only. Report each probability with two decimal places (e.g., 0.37), summing to 1:
+{"probs": {"Type A": p, "Type B": p, "Type C": p, "Type D": p, "Type E": p}, "prediction": "<one of the type labels>", "evidence": "one sentence"}
+
+<match>
+Hand 1: You are Player 1 and hold the Jack. You checked. Opponent checked. Showdown: the opponent had the Queen. You lost 1 chip.
+Hand 2: You are Player 2 and hold the King. Opponent checked. You bet. Opponent folded. No showdown; the opponent's card was not shown. You won 1 chip.
+Hand 3: You are Player 1 and hold the Jack. You bet. Opponent folded. No showdown; the opponent's card was not shown. You won 1 chip.
+Hand 4: You are Player 2 and hold the Jack. Opponent bet. You folded. No showdown; the opponent's card was not shown. You lost 1 chip.
+Hand 5: You are Player 1 and hold the Jack. You checked. Opponent checked. Showdown: the opponent had the Queen. You lost 1 chip.
+Hand 6: You are Player 2 and hold the Queen. Opponent checked. You checked. Showdown: the opponent had the Jack. You won 1 chip.
+Hand 7: You are Player 1 and hold the Jack. You checked. Opponent bet. You folded. No showdown; the opponent's card was not shown. You lost 1 chip.
+Hand 8: You are Player 2 and hold the King. Opponent checked. You bet. Opponent folded. No showdown; the opponent's card was not shown. You won 1 chip.
+Final result: you broke even over 8 hands.
+</match>
